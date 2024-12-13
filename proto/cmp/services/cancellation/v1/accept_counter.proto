@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package cmp.services.cancellation.v1;
+
+import "cmp/types/v1/common.proto";
+import "cmp/types/v2/price.proto";
+
+// Request for counter cancellation acceptance
+message AcceptCounterCancellationRequest {
+  // Request header
+  cmp.types.v1.RequestHeader header = 1;
+
+  // Cancellation token ID
+  uint64 token_id = 2;
+
+  // Refund amount to validate the acceptance on-chain
+  cmp.types.v2.Price refund_amount = 3;
+}
+
+// Response for counter cancellation acceptance
+message AcceptCounterCancellationResponse {
+  // Response header
+  cmp.types.v1.ResponseHeader header = 1;
+
+  // Transaction ID on-chain for the counter cancellation proposal acceptance. This
+  // transaction proves the acceptance of the counter proposal on-chain to avoid
+  // disputes.
+  string transaction_id = 2;
+}
