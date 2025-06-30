@@ -81,7 +81,7 @@ function check_added_file {
 		return
 	fi
 
-	GIT_PAGER=cat git diff --exit-code origin/$ORIGIN:$OTHER_FILE $FILE
+	GIT_PAGER=cat git diff --color=always --exit-code origin/$ORIGIN:$OTHER_FILE $FILE
 	if [[ "$?" == "0" ]] ; then
 		echo "❓ No change detected! (weird?)"
 	fi
@@ -96,7 +96,7 @@ function check_modified_file {
 	echo -e "🔧 Detected modified file: ${PURPLE}$FILE${NC}" 
 	echo -e "🔃 Comparing against ${PURPLE}$ORIGIN/$OTHER_FILE${NC}"
 
-	GIT_PAGER=cat git diff --exit-code origin/$ORIGIN:$OTHER_FILE $FILE
+	GIT_PAGER=cat git diff --color=always --exit-code origin/$ORIGIN:$OTHER_FILE $FILE
 	if [[ "$?" == "0" ]] ; then
 		echo "❓ No change detected! (weird?)"
 	fi

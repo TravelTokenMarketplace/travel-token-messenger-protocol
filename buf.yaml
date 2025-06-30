@@ -9,8 +9,11 @@ lint:
     RPC_REQUEST_STANDARD_NAME:
       - proto/cmp/services/notification/v1/notify.proto
       - proto/cmp/services/notification/v2/notify.proto
+      - proto/cmp/services/notification/v3/notify.proto
   rpc_allow_google_protobuf_empty_responses: true
 breaking:
   use:
     - FILE
   ignore_unstable_packages: true
+deps:
+  - buf.build/bufbuild/protovalidate

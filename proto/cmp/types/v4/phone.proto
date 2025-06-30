@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package cmp.types.v4;
+
+import "buf/validate/validate.proto";
+
+// Phone type to be used in various types as hotels, holiday homes etc.
+//
+// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/phone.proto.dot.xs.svg)
+//
+// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/phone.proto.dot.svg)
+message Phone {
+  string number = 1 [(buf.validate.field).string = {
+    // E.164 format without extensions
+    pattern: "^\\+[1-9]\\d{7,14}$"
+  }];
+
+  // TODO: Explain what an extension is
+  string extension = 2 [(buf.validate.field).string = {
+    pattern: "^[0-9]{1,10}$" // Numeric extensions up to 10 digits
+  }];
+
+  cmp.types.v4.PhoneType type = 3 [(buf.validate.field).enum = {defined_only: true}];
+
+  string description = 4 [(buf.validate.field).string = {
+    min_len: 0
+    max_bytes: 512
+  }];
+
+  option (buf.validate.message).cel = {
+    id: "description_required_when_type_unspecified"
+    message: "description is required when type is UNSPECIFIED"
+    expression: "this.type != cmp.types.v4.PhoneType.PHONE_TYPE_UNSPECIFIED || size(this.description.trim()) > 0"
+  };
+}
+
+enum PhoneType {
+  PHONE_TYPE_UNSPECIFIED = 0;
+  PHONE_TYPE_RECEPTION = 1; // For accommodation properties like hotels.
+  PHONE_TYPE_BOOKING = 2; // Booking-related inquiries.
+  PHONE_TYPE_SUPPORT = 3; // Customer support and service.
+  PHONE_TYPE_INQUIRIES = 4; // General inquiries.
+  PHONE_TYPE_TRANSPORT_SERVICE = 5; // Transport services, like taxi or shuttle services.
+  PHONE_TYPE_RENTAL_SERVICE = 6; // Car rental service numbers.
+  PHONE_TYPE_ACTIVITY_COORDINATOR = 7; // Coordinators for activities or events.
+  PHONE_TYPE_BILLING = 8; // Billing and payment inquiries.
+  PHONE_TYPE_EMERGENCY = 9; // Emergency contact numbers.
+  PHONE_TYPE_FAX = 10; // Fax numbers.
+  PHONE_TYPE_MOBILE = 11; // Mobile phone numbers.
+  PHONE_TYPE_HOME = 12; // Home phone numbers.
+  PHONE_TYPE_BUSINESS = 13; // Business or office phone numbers.
+  PHONE_TYPE_TOLL_FREE = 14; // Toll-free numbers.
+  PHONE_TYPE_HOTLINE = 15; // Hotlines, for specialized support or services.
+  PHONE_TYPE_WORK = 16; // Work phone numbers.
+}

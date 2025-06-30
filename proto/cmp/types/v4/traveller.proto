@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package cmp.types.v4;
+
+import "buf/validate/validate.proto";
+import "cmp/types/v2/country.proto";
+import "cmp/types/v4/contact_info.proto";
+import "cmp/types/v4/date.proto";
+import "cmp/types/v4/document.proto";
+
+// Traveller
+//
+// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/traveller.proto.dot.xs.svg)
+//
+// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/traveller.proto.dot.svg)
+message BasicTraveller {
+  // Guest number, the lowest number is the lead-pax. This ID is also used for
+  // referencing services linked to specific participants, like baggage.
+  // the traveller_id must be kept consistent between the search request and response.
+  // Conclusively if the request specifies traveller 0 and 1, then the response also refers
+  // to these traveller numbers. If the request specifies 1 and 2 or 10 and 20, then the
+  // response also returns these references.
+  // The traveller_id is specified in each unit and only detailed once in the search response
+  // repeated travellers field
+  uint32 traveller_id = 1;
+
+  // Traveller type from enum below
+  cmp.types.v4.TravellerType type = 2 [(buf.validate.field).enum = {
+    /* Only allow defined traveller types */
+    defined_only: true
+    /* Do not allow UNSPECIFIED */
+    not_in: [0]
+  }];
+
+  // Birthdate is optional for adults. But some suppliers may require it and return
+  // an error if it is missing.
+  cmp.types.v4.Date birthdate = 3;
+
+  // The country code for the nationality of the traveller.
+  cmp.types.v2.Country nationality = 4;
+
+  // Message validations
+  option (buf.validate.message) = {
+    cel: {
+      id: "non_adult_requires_birthdate"
+      message: "Birthdate is required when traveller type is **not** ADULT"
+      expression: "this.type != cmp.types.v4.TravellerType.TRAVELLER_TYPE_ADULT ? has(this.birthdate) : true"
+    }
+  };
+}
+
+// Traveller Type
+enum TravellerType {
+  TRAVELLER_TYPE_UNSPECIFIED = 0;
+  TRAVELLER_TYPE_ADULT = 1;
+  TRAVELLER_TYPE_CHILD = 2;
+  TRAVELLER_TYPE_INFANT = 3;
+  TRAVELLER_TYPE_SENIOR = 4;
+}
+
+message ExtensiveTraveller {
+  // Guest number. The lowest number is the lead-pax. This ID is also used for
+  // referencing services linked to specific participants, such as baggage.
+  uint32 traveller_id = 1;
+
+  // Gender, as defined by the enum below.
+  cmp.types.v4.GenderType gender = 2 [(buf.validate.field).enum.defined_only = true]; // Only allow defined genders, including UNSPECIFIED.
+
+  // Many systems use a single field each for all first names and surnames.
+  // However, many countries have multiple given names and family names, and certain
+  // authorities require the names to be registered exactly as they appear in the
+  // traveller's passport.
+  //
+  // For example, a traveller might have "Diana Frances" as the first name and
+  // "Spencer" as the surname, or "Winnie" as the first name and "Madikizela-Mandela"
+  // as the surname (i.e. a double-barrelled surname). In Spanish naming traditions,
+  // it is common to have two surnames: one from the father and one from the mother,
+  // as in "Julio Iglesias de la Cueva" and "Enrique Iglesias Preysler". To handle
+  // these variations, multiple entries are allowed. Systems with a fixed number of
+  // fields may use the first entry for one component and the second entry for the other.
+  //
+  // For example for full name "John Roger Stephens Legend":
+  //    first_names: ["John",  "Roger"]
+  //    surnames: ["Stephens", "Legend"]
+  repeated string first_names = 3 [(buf.validate.field).repeated = {
+    min_items: 1 // At least one first name is required
+    max_items: 10
+    items: {
+      string: {
+        min_len: 1 // Name must not be empty
+        max_len: 100 // Reasonable maximum length for a name
+      }
+    }
+  }];
+
+  repeated string surnames = 4 [(buf.validate.field).repeated = {
+    min_items: 1 // At least one surname is required
+    max_items: 10
+    items: {
+      string: {
+        min_len: 1 // Name must not be empty
+        max_len: 100 // Reasonable maximum length for a name
+      }
+    }
+  }];
+
+  // This is not required by the protocol but it might be required by some suppliers.
+  cmp.types.v4.ContactInfo contact_info = 5;
+
+  // This is not required by the protocol but it might be required by some suppliers.
+  repeated cmp.types.v4.Document documents = 6 [(buf.validate.field).repeated = {
+    max_items: 100 // Default max items
+  }];
+}
+
+// Gender Type
+enum GenderType {
+  GENDER_TYPE_UNSPECIFIED = 0;
+  GENDER_TYPE_MALE = 1;
+  GENDER_TYPE_FEMALE = 2;
+  GENDER_TYPE_NONBINARY = 3;
+  GENDER_TYPE_AGENDER = 4;
+}
