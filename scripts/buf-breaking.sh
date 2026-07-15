@@ -2,7 +2,7 @@
 
 echo "Starting buf breaking check..."
 
-AGAINST=${1:-buf.build/<NEW_BSR_ORG>/travel-token-messenger-protocol}
+AGAINST=${1:-buf.build/ttm/messenger-protocol}
 EXCLUDE_FILE="missing_files.txt"
 EXCLUDE=""
 

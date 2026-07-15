@@ -1,6 +1,6 @@
 # Travel Token Messenger Protocol
 
-[![BUF BUILD](https://img.shields.io/badge/BUF-BUILD-72a1ed?style=for-the-badge&logoColor=white&labelColor=0C65EC)](https://buf.build/<NEW_BSR_ORG>/travel-token-messenger-protocol/)
+[![BUF BUILD](https://img.shields.io/badge/BUF-BUILD-72a1ed?style=for-the-badge&logoColor=white&labelColor=0C65EC)](https://buf.build/ttm/messenger-protocol/)
 
 ---
 

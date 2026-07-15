@@ -1,7 +1,7 @@
 version: v2
 modules:
   - path: proto
-    name: buf.build/<NEW_BSR_ORG>/travel-token-messenger-protocol
+    name: buf.build/ttm/messenger-protocol
 lint:
   use:
     - STANDARD
