@@ -99,8 +99,16 @@ so nothing publishes to a not-yet-ready BSR org or diagram host:
 - `diagrams` job — replaced wholesale in §5; the new Pages job also starts
   gated off until the site is provisioned.
 
-Lint/format/sanity jobs (`buf-lint`, `buf-format`, `sanity-checks`,
-`analyze-service-tags`, `fqpn-check`, `diff-dev`) stay active.
+Lint/format jobs (`buf-lint`, `buf-format`, `analyze-service-tags`,
+`fqpn-check`) stay active. The `diff-dev` job is informational (`|| true`)
+and stays.
+
+`sanity-checks` is **also gated off** (decided 2026-07-15): its steps
+(`dependency_checker.py`, `diff_against_branch.sh`, `buf-breaking.sh`)
+compare the branch against a released baseline (`origin/main` /
+`buf.build/.../main`). A full `cmp`→`ttm` namespace move makes every symbol
+"break" relative to that baseline, and the new baseline only exists after
+this rebrand merges (and the new BSR org exists). Re-enabled post-merge.
 
 ## 4. Phased commits on `rebranding`
 
@@ -185,6 +193,8 @@ provisioned and the BSR org exists.
   `bsr-push-draft`. User provides at push time.
 - **GitHub Pages site** — enable Pages on the new repo (source: `gh-pages`),
   first publish, then re-enable the diagram workflow.
+- **`sanity-checks` CI job** — re-enable once `origin/main` carries the `ttm`
+  layout (post-merge) and the new BSR `main` baseline exists.
 - Post-migration: confirm buf.build docs render the injected Pages diagram
   links.
 

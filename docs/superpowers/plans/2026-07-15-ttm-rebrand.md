@@ -241,14 +241,16 @@ In `scripts/list_services.sh`, update the `cmp/...` example comment lines to `tt
 sed -i 's#cmp/#ttm/#g' scripts/list_services.sh
 ```
 
-- [ ] **Step 5: Verify the sanity scripts pass end-to-end**
+- [ ] **Step 5: Verify the baseline-free scripts and syntax**
 
+`dependency_checker.py` cannot run to completion during the rebrand — it compares against a released baseline branch that does not yet carry the `ttm` layout (that job is gated off in Task 5). So verify it only compiles, and run the scripts that need no baseline:
 ```bash
-scripts/dependency_checker.py --print-graph && echo "deps ok"
+python3 -m py_compile scripts/dependency_checker.py && echo "deps compiles"
+grep -n 'startswith("cmp/")\|cmp\.types\|cmp/types' scripts/dependency_checker.py && echo "LEFTOVER cmp" || echo "deps clean"
 scripts/fqpn_check.sh && echo "fqpn ok"
 scripts/list_services.sh | head
 ```
-Expected: `deps ok`, `fqpn ok`, and `list_services.sh` prints `ttm/...` service paths with no `cmp` references.
+Expected: `deps compiles`, `deps clean`, `fqpn ok`, and `list_services.sh` prints `ttm/...` example paths with no `cmp` references.
 
 - [ ] **Step 6: Commit**
 
@@ -259,20 +261,24 @@ git commit -m "chore(scripts): repoint tooling from proto/cmp to proto/ttm"
 
 ---
 
-### Task 5: Update buf config, breaking baseline, and `c4t` → `main`
+### Task 5: Update buf config, breaking baseline, `c4t` → `main`, and gate off `sanity-checks`
 
-Point buf's module name / go package prefix / breaking baseline at the placeholder BSR path, fix the lint ignore paths, and rename all `c4t` branch references to `main`.
+Point buf's module name / go package prefix / breaking baseline at the placeholder BSR path, fix the lint ignore paths, rename all `c4t` branch references to `main`, and gate off the `sanity-checks` CI job.
+
+**Why gate `sanity-checks`:** its steps (`dependency_checker.py`, `diff_against_branch.sh`, `buf-breaking.sh`) all compare the branch against a released baseline (`origin/main` / `buf.build/.../main`). A full `cmp`→`ttm` namespace move makes every symbol "break" relative to that baseline, and the new baseline only exists after this rebrand merges (and after the new BSR org exists). So the job cannot go green on the rebrand PR; gate it off like the BSR push and re-enable post-merge. This is the user's decision (2026-07-15), consistent with "pause the buf.build workflows".
 
 **Files:**
 - Modify: `buf.yaml` (module `name`, `lint.ignore_only` paths)
 - Modify: `buf.gen.yaml` (`go_package_prefix` value)
 - Modify: `scripts/buf-breaking.sh` (`AGAINST` default)
 - Modify: `scripts/create_c4t_file_listing.sh` → rename to `scripts/create_baseline_file_listing.sh` (path prefix + `origin/c4t`)
-- Modify: `.github/workflows/ci.yaml` (any `c4t` refs) and `scripts/analyze-service-tags.sh` callers if they reference the renamed script
+- Modify: `scripts/dependency_checker.py` (the `os.popen("scripts/create_c4t_file_listing.sh")` call → renamed script; `c4t` comment/var text is cosmetic — leave it)
+- Modify: `scripts/diff_against_branch.sh` (default baseline `c4t` → `main`)
+- Modify: `.github/workflows/ci.yaml` (`c4t` refs; gate off `sanity-checks` job)
 
 **Interfaces:**
 - Consumes: `proto/ttm/` layout.
-- Produces: buf config referencing `buf.build/<NEW_BSR_ORG>/travel-token-messenger-protocol`; breaking baseline `main`.
+- Produces: buf config referencing `buf.build/<NEW_BSR_ORG>/travel-token-messenger-protocol`; breaking baseline `main`; `sanity-checks` gated off.
 
 - [ ] **Step 1: Update the buf module name and lint ignore paths**
 
@@ -302,28 +308,55 @@ git mv scripts/create_c4t_file_listing.sh scripts/create_baseline_file_listing.s
 sed -i -e 's#origin/c4t#origin/main#g' -e 's#proto/cmp#proto/ttm#g' -e 's#\bcmp/#ttm/#g' scripts/create_baseline_file_listing.sh
 ```
 
-- [ ] **Step 5: Replace remaining `c4t` references in CI**
+- [ ] **Step 5: Fix the script-name call in dependency_checker.py and the diff baseline default**
 
-In `.github/workflows/ci.yaml`, the `diagrams` job's `if:` lists `refs/heads/c4t`; since that job is already gated off (Task 2) and rebuilt in Task 8, replace `c4t` → `main` for consistency anywhere it appears:
+`dependency_checker.py` calls the renamed script by its old name (`os.popen("scripts/create_c4t_file_listing.sh")`), and `diff_against_branch.sh` defaults its baseline to `c4t`:
+```bash
+sed -i 's#scripts/create_c4t_file_listing.sh#scripts/create_baseline_file_listing.sh#g' scripts/dependency_checker.py
+sed -i 's/ORIGIN=${1:-c4t}/ORIGIN=${1:-main}/' scripts/diff_against_branch.sh
+```
+Verify:
+```bash
+grep -n 'create_c4t_file_listing' scripts/dependency_checker.py && echo "STALE" || echo "ok"
+grep -n 'ORIGIN=${1:-main}' scripts/diff_against_branch.sh
+```
+Expected: `ok`, and the `diff_against_branch.sh` line shows the `main` default. (The `c4t` words in comments/variable names inside these two scripts are cosmetic and may remain.)
+
+- [ ] **Step 6: Replace `c4t` refs in CI and gate off `sanity-checks`**
+
+Replace the `refs/heads/c4t` in the `diagrams` job `if:` and the script-name reference, then gate off the whole `sanity-checks` job (baseline-dependent; see task intro):
 ```bash
 sed -i 's#refs/heads/c4t#refs/heads/main#g; s#create_c4t_file_listing#create_baseline_file_listing#g' .github/workflows/ci.yaml
-grep -rn 'c4t' .github scripts && echo "LEFTOVER c4t" || echo "no c4t"
 ```
-Expected: `no c4t`.
+Then edit `.github/workflows/ci.yaml` so the `sanity-checks` job reads (add the two lines directly under `runs-on`):
+```yaml
+  sanity-checks:
+    runs-on: ubuntu-latest
+    # TODO(rebrand): re-enable post-merge once origin/main carries the ttm layout and the new BSR baseline exists.
+    if: false
+    steps:
+```
+Verify no `c4t` remains outside cosmetic script text and the YAML parses:
+```bash
+grep -rn 'c4t' .github && echo "LEFTOVER c4t in CI" || echo "no c4t in CI"
+python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yaml')); print('yaml ok')"
+```
+Expected: `no c4t in CI` and `yaml ok`.
 
-- [ ] **Step 6: Verify buf still lints and the breaking baseline reference is consistent**
+- [ ] **Step 7: Verify buf still lints and the breaking baseline reference is consistent**
 
+The `buf.yaml` `ignore_only` paths now point at `proto/ttm/...`, so the notification RPC-name lint exemptions apply again and `buf lint` should be fully clean:
 ```bash
 buf lint && echo "lint ok"
 grep -rn 'camino-messenger-protocol\|chain4travel' buf.yaml buf.gen.yaml scripts/buf-breaking.sh && echo "LEFTOVER" || echo "clean"
 ```
-Expected: `lint ok` and `clean` (only the `<NEW_BSR_ORG>` placeholder remains, which is intended).
+Expected: `lint ok` (no output from buf lint) and `clean` (only the `<NEW_BSR_ORG>` placeholder remains, which is intended).
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
-git add buf.yaml buf.gen.yaml scripts/buf-breaking.sh scripts/create_baseline_file_listing.sh .github/workflows/ci.yaml
-git commit -m "chore(buf): repoint module to new BSR placeholder, rename c4t baseline to main"
+git add buf.yaml buf.gen.yaml scripts/buf-breaking.sh scripts/create_baseline_file_listing.sh scripts/dependency_checker.py scripts/diff_against_branch.sh .github/workflows/ci.yaml
+git commit -m "chore(buf): repoint module to BSR placeholder, c4t->main baseline, gate sanity-checks"
 ```
 
 ---
@@ -651,12 +684,11 @@ Expected: the only `camino` hits are inside `docs/superpowers/specs/` (this desi
 
 ```bash
 buf lint && buf format proto --diff --exit-code \
-  && scripts/dependency_checker.py --print-graph \
   && scripts/analyze-service-tags.sh proto \
   && scripts/fqpn_check.sh \
   && echo "ALL SANITY OK"
 ```
-Expected: `ALL SANITY OK`.
+Expected: `ALL SANITY OK`. (`dependency_checker.py`/`diff_against_branch.sh`/`buf-breaking.sh` are intentionally excluded — they need the post-merge baseline and their CI job is gated off; see Task 5.)
 
 - [ ] **Step 3: Diagram generation smoke test**
 
@@ -686,3 +718,4 @@ In the workspace-parent `REBRANDING.md` (NOT committed to any repo), set the `pr
 
 - **buf.build BSR org/repo:** user provides the real org; replace `<NEW_BSR_ORG>` in `buf.yaml`, `buf.gen.yaml`, `scripts/buf-breaking.sh`, `README.md`; re-enable the `bsr-push-draft` job (`if:` back to the branch condition).
 - **GitHub Pages:** enable Pages on the new repo (source: `gh-pages` branch), let the `diagrams` job run once to seed it, then re-enable the job (`if:` back to the branch condition) and confirm buf.build docs render the injected Pages links.
+- **`sanity-checks` job:** re-enable (`if:` removed) once `origin/main` carries the `ttm` layout (post-merge) and the new BSR `main` baseline exists — its `dependency_checker.py` / `diff_against_branch.sh` / `buf-breaking.sh` steps compare against that baseline.
