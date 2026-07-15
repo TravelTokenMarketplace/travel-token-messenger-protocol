@@ -298,9 +298,7 @@ message ActivityService {
   repeated string included = 4 [(buf.validate.field).repeated = {
     min_items: 0
     max_items: 100
-    items: {
-      string: {max_bytes: 512}
-    }
+    items: {string: {max_bytes: 512}}
   }];
 }
 

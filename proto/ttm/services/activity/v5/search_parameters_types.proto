@@ -46,9 +46,7 @@ message ActivitySearchParameters {
   repeated string unit_codes = 4 [(buf.validate.field).repeated = {
     min_items: 0
     max_items: 100
-    items: {
-      string: {max_bytes: 512}
-    }
+    items: {string: {max_bytes: 512}}
   }];
 
   // Specify one or more service codes to be included in the search response
@@ -58,9 +56,7 @@ message ActivitySearchParameters {
   repeated string service_codes = 5 [(buf.validate.field).repeated = {
     min_items: 0
     max_items: 100
-    items: {
-      string: {max_bytes: 512}
-    }
+    items: {string: {max_bytes: 512}}
   }];
 
   // The minimum and maximum duration of an activity to be included in the

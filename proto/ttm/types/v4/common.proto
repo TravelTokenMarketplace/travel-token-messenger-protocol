@@ -114,7 +114,7 @@ message ErrorResponseHeader {
 // informational message.
 message Alert {
   ttm.types.v4.AlertCode code = 3 [(buf.validate.field).enum = {
-    defined_only: true // Ensures only defined enum values are used.
+    defined_only: true /* Ensures only defined enum values are used. */
     not_in: [0] /* Disallows ALERT_CODE_UNSPECIFIED. */
   }];
 
@@ -138,7 +138,7 @@ enum AlertCode {
 // Errors provides detailed feedback about why a request failed.
 message Error {
   ttm.types.v4.ErrorCode code = 1 [(buf.validate.field).enum = {
-    defined_only: true // Ensures only defined enum values are used.
+    defined_only: true /* Ensures only defined enum values are used. */
     not_in: [0] /* Disallows ERROR_CODE_UNSPECIFIED. */
   }];
 

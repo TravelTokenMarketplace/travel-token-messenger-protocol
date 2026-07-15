@@ -32,9 +32,7 @@ message SearchParameters {
   // product is to be included in the search response
   repeated string brand_codes = 4 [(buf.validate.field).repeated = {
     max_items: 100 // Default max items
-    items: {
-      string: {max_bytes: 512}
-    }
+    items: {string: {max_bytes: 512}}
   }];
 
   // Include OnRequest options in the response or only immediately bookable options

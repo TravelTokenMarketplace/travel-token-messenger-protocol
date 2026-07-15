@@ -22,7 +22,7 @@ message CounterCancellationRequest {
 
   // Counter reason
   ttm.services.cancellation.v1.CounterReason reason = 4 [(buf.validate.field).enum = {
-    defined_only: true // Only allow defined enum values
+    defined_only: true /* Only allow defined enum values */
     not_in: [0] /* Exclude unspecified value */
   }];
 }

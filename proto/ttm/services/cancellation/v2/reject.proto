@@ -18,7 +18,7 @@ message RejectCancellationRequest {
 
   // Reason for rejection
   ttm.services.cancellation.v1.RejectionReason reason = 3 [(buf.validate.field).enum = {
-    defined_only: true // Only allow defined enum values
+    defined_only: true /* Only allow defined enum values */
     not_in: [0] /* Exclude unspecified value */
   }];
 }
