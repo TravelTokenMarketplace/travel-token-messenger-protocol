@@ -8,6 +8,9 @@ GENERATED_DIR="${1:-gen}"
 PROTO_DIR="${2:-proto/ttm}"
 PROTODOT_DIR="${3:-diagrams}"
 
+# shellcheck source=scripts/lib/svgz.sh
+source "$(dirname "$0")/lib/svgz.sh"
+
 declare -a BIG_ENUMS=(
     "country.proto"
     "currency.proto"
@@ -96,9 +99,7 @@ for protofile in `find ${PROTO_DIR} -type f -name '*.proto'`; do
     # Gzip the diagram to .svgz (smaller Pages footprint; browsers/BSR render it)
     # and drop the plain .svg so Pages only stores the compressed copy.
     svg_filename="${GENERATED_DIR}/${PROTODOT_DIR}/${protofile}.dot.svg"
-    svgz_filename="${svg_filename%.svg}.svgz"
-    gzip -c "${svg_filename}" > "${svgz_filename}"
-    rm -f "${svg_filename}"
+    svgz_convert "${svg_filename}"
 done
 
 # When generating finished, revert the truncated big enums
