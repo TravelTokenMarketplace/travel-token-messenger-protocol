@@ -42,8 +42,18 @@ download_and_install() {
   local version=$1
   local temp_file=$(mktemp)
 
-  # Download the file
-  local download_url="https://github.com/bufbuild/buf/releases/download/${version}/buf-$(uname -s)-$(uname -m)"
+  # Build the download URL. When no version is given we use GitHub's
+  # `releases/latest/download/<asset>` path, which is a plain 302 redirect to
+  # the newest release asset (web, not the API) — so it needs no token and is
+  # not subject to api.github.com rate limits (which otherwise made the
+  # `latest` tag_name lookup return "null" in CI).
+  local download_url
+  if [[ -z "$version" ]]; then
+    download_url="https://github.com/bufbuild/buf/releases/latest/download/buf-$(uname -s)-$(uname -m)"
+    version="latest"
+  else
+    download_url="https://github.com/bufbuild/buf/releases/download/${version}/buf-$(uname -s)-$(uname -m)"
+  fi
   echo "Downloading: $download_url"
   if ! curl -sSL "$download_url" -o "$temp_file"; then
     echo "Error: Failed to download buf version ${version}."
@@ -77,7 +87,6 @@ BIN="/usr/local/bin"
 
 # Github URLs
 GITHUB_API_URL_RELEASES="https://api.github.com/repos/bufbuild/buf/releases"
-GITHUB_API_URL_LATEST="${GITHUB_API_URL_RELEASES}/latest"
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -118,9 +127,10 @@ if [[ "$LIST_ONLY" == true ]]; then
   exit 0
 fi
 
-if [[ -z "$VERSION" ]]; then
-  VERSION=$(curl -sSL "${GITHUB_API_URL_LATEST}" | jq -r '.tag_name')
-elif [[ "$DO_NOT_VALIDATE" != true ]]; then
+# An explicitly requested version is validated against the release list
+# (unless --do-not-validate). With no version, download_and_install pulls the
+# latest release via the redirect URL above — no api.github.com call at all.
+if [[ -n "$VERSION" ]] && [[ "$DO_NOT_VALIDATE" != true ]]; then
   validate_version "$AVAILABLE_VERSIONS"
 fi
 
