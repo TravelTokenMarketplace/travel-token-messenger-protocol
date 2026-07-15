@@ -5,7 +5,7 @@ syntax = "proto3";
 // Insurance Services has two main processes:
 //
 // - selling insurances: this process follows the same flow as selling any travel
-// product on the Camino Network: Static data download using the InsuranceProductList
+// product on the Travel Token Messenger: Static data download using the InsuranceProductList
 // message to obtain the (changed) portfolio of product a supplier offers, followed by
 // the InsuranceProductInfo message to get the exact detail of each product. The real-time data
 // does not contain any static information and consists of the InsuranceSearch message, followed

@@ -60,7 +60,7 @@ message PriceDetail {
 //
 // On-chain payment of 100.65 EURSH:
 // value=10065, decimals=2, contract_address=0x...
-// This currency has 5 decimals on Columbus and Camino. To create the transaction value,
+// This currency has 5 decimals on Columbus and Travel Token Messenger. To create the transaction value,
 // 10065 must be divided by 10^2 = 100.65 EURSH, then represented in its smallest
 // fraction by multiplying 100.65 EURSH * 10^5 => 10065000
 // (Example conversion to bigint without losing accuracy: bigint(10065) * 10^(5-2))
@@ -76,14 +76,14 @@ message PriceDetail {
 //
 // On-chain payment of 1 nCAM:
 // value=1, decimals=9
-// This currency has denominator 18 on Columbus and Camino. To mint 1 nCam, it must be
+// This currency has denominator 18 on Columbus and Travel Token Messenger. To mint 1 nCam, it must be
 // divided by 10^9 = The currency has denominator 18 on
 // Columbus. To mint 1 nCam, divide by 10^9 = 0.000000001 CAM, then express in its
 // smallest fraction by multiplying 0.000000001 * 10^18 => 1000000000 aCAM
 //
 // For the "currency" field, the Currency message provides a "one-of" option to specify:
 // - Traditional fiat currency (EUR, USD, CHF) according to ISO codes
-// - Native Camino and Columbus blockchain currency (CAM)
+// - Native Travel Token Messenger and Columbus blockchain currency (CAM)
 // - ERC20 digital currencies like stablecoins (EURe, EURSH, EURC, USDC), Volatile
 //   coins (BTC, AVAX) and Loyalty points (Aventus/AVT for events, Plutus/PLU from
 //   Visa, AVA from Travala, Blackbird's FLY)

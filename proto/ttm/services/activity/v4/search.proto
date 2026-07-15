@@ -4,7 +4,7 @@ syntax = "proto3";
 //
 // The Activity services are used for both tickets and excursions.
 //
-// Any search message response in the Camino Messenger Protocol only includes
+// Any search message response in the Travel Token Messenger Protocol only includes
 // dynamic data in the search, validate and mint process. Static data can be cached
 // and kept up to date with the Product List and Product Details messages.
 //

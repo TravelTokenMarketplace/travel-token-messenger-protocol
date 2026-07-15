@@ -8,7 +8,7 @@ syntax = "proto3";
 // is possible and the refund amount on the blockchain, so that there will be no
 // disputes after a cancellation is executed.
 //
-// There is a detailed explanation on [Camino Docs](https://docs.camino.network/camino-messenger/cancellation)
+// See the service documentation for a detailed explanation
 package ttm.services.cancellation.v3;
 
 import "ttm/services/cancellation/v3/accept.proto";

@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-// ## Camino Messenger Protocol (CMP) Types Package - Common Definitions
+// ## Travel Token Messenger Protocol (Travel Token Messenger Protocol) Types Package - Common Definitions
 //
-// This file contains commonly used message types for the Camino Messenger Protocol
-// (CMP), forming a foundational part of CMP message structures.
+// This file contains commonly used message types for the Travel Token Messenger Protocol
+// (Travel Token Messenger Protocol), forming a foundational part of Travel Token Messenger Protocol message structures.
 //
 // **Understanding Protobuf Default Values:** When parsing Protocol Buffer messages,
 // there's a distinction between a field being absent and a field being present with
@@ -11,7 +11,7 @@ syntax = "proto3";
 // field is not explicitly set when a message is serialized, it will deserialize
 // with a default value (e.g., 0 for integers/enums, empty string for strings).
 //
-// Consequently, for enums within CMP:
+// Consequently, for enums within Travel Token Messenger Protocol:
 // - The '0' value is conventionally defined as `*_UNSPECIFIED`.
 // - It's often impossible to distinguish if `*_UNSPECIFIED` (value 0) was
 //   explicitly set or if the field was omitted.
@@ -33,11 +33,11 @@ package ttm.types.v4;
 import "buf/validate/validate.proto";
 import "ttm/types/v4/evm_address.proto";
 
-// Header provides common metadata for CMP messages.
+// Header provides common metadata for Travel Token Messenger Protocol messages.
 //
 //
 message Header {
-  // The version of the CMP bot or component processing/generating the message. This
+  // The version of the Travel Token Messenger Protocol bot or component processing/generating the message. This
   // field is crucial for transparency, version compatibility checks, and
   // troubleshooting, especially when different components or partners might be
   // running different versions.
@@ -45,7 +45,7 @@ message Header {
   //   - In requests and responses by an external system (e.g., a "partner plugin")
   //     that may not know the bot's specific version, this field can be sent with a
   //     default `Version` message (e.g., major:0, minor:0, patch:0).
-  //   - In requests and responses generated or modified by a CMP bot/component,
+  //   - In requests and responses generated or modified by a Travel Token Messenger Protocol bot/component,
   //     this field **must** be populated with the actual semantic version of that
   //     bot/component.
   //
@@ -85,13 +85,13 @@ message Version {
 
 // RequestHeader wraps the common base header and includes response-specific info.
 message RequestHeader {
-  // The base header information common to all CMP messages.
+  // The base header information common to all Travel Token Messenger Protocol messages.
   ttm.types.v4.Header base_header = 1 [(buf.validate.field).required = true];
 }
 
 // The SuccessResponseHeader wraps the common base header and includes response-specific info.
 message SuccessResponseHeader {
-  // The base header information common to all CMP messages.
+  // The base header information common to all Travel Token Messenger Protocol messages.
   ttm.types.v4.Header base_header = 1 [(buf.validate.field).required = true];
 
   // A list of alerts providing more detailed information about the response
@@ -100,7 +100,7 @@ message SuccessResponseHeader {
 
 // The ErrorResponseHeader wraps the common base header and includes reasons for failure.
 message ErrorResponseHeader {
-  // The base header information common to all CMP messages.
+  // The base header information common to all Travel Token Messenger Protocol messages.
   ttm.types.v4.Header base_header = 1 [(buf.validate.field).required = true];
 
   // A list of errors providing more detailed information about the

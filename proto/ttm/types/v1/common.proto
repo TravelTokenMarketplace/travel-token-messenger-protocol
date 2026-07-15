@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-// ## Camino Messenger Protocol (CMP) Types Package
+// ## Travel Token Messenger Protocol (Travel Token Messenger Protocol) Types Package
 //
-// Commonly used message types across all CMP messages
+// Commonly used message types across all Travel Token Messenger Protocol messages
 //
 // While parsing protobuf one can only distinguish between "a message is present"
 // and "a message is absent". All fields (which are not messages) inside a present
