@@ -1,0 +1,177 @@
+syntax = "proto3";
+
+// ### Activity Services
+//
+// The Activity services are used for both tickets and excursions.
+//
+// Any search message response in the Camino Messenger Protocol only includes
+// dynamic data in the search, validate and mint process. Static data can be cached
+// and kept up to date with the Product List and Product Details messages.
+//
+// Partners keep the list of activity products up-to-date on a daily basis, by
+// getting changes since yesterday with the ActivityProductList service. The details
+// of the updated activities are bing pulled using the ActivityProductInfo service.
+//
+// Once we have a traveller interested in an activity, the ActivitySearch service is
+// used to obtain the pricing of relevant activities that are available. In this
+// process there is no repeated exchange of static data to reduce the message size,
+// reduce cost and increase processing speed.
+//
+// Similar to all other message types, the Activity service is constructed using the
+// "Product", "Unit" and "Service" layers. For example the product is a Taylor Swift
+// concert or a Disney World ticket. The unit then gives us a choice of the
+// different options that are available, like for example a normal ticket or a VIP
+// ticket. Finally we would have the services, which can be selected like do we go
+// there by ourselves or is a transfer from our hotel included. This then would
+// result to product=Disneyland, unit=VIP, service=TRFIncluded.
+//
+// It is of course impossible to offer a transfer from every hotel in Florida to
+// Disney World. A supplier might have defined just the ticket, without transfer. And
+// additionally a ticket with transfer from the 25 most popular hotels in the area.
+// If the PickUp is not provided in the search request, the response should include
+// an option without transfer and further options that include a transfer from
+// several hotels that are close together and would cost the same for the ticket and
+// transfer.
+//
+// The Activity search messages will be adapted to work with the SeatMap services,
+// just like the Transport service. This package is **WIP**.
+package ttm.services.activity.v5;
+
+import "buf/validate/validate.proto";
+import "ttm/services/activity/v5/search_parameters_types.proto";
+import "ttm/services/activity/v5/search_result_types.proto";
+import "ttm/types/v4/common.proto";
+import "ttm/types/v4/location.proto";
+import "ttm/types/v4/search.proto";
+import "ttm/types/v4/travel_period.proto";
+import "ttm/types/v4/traveller.proto";
+import "ttm/types/v4/uuid.proto";
+
+// Search request for Activities
+message ActivitySearchRequest {
+  // Message header. Contains API version, message info string and end-user wallet
+  // address.
+  ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];
+
+  // Generic search parameters
+  //
+  // Ex: Inclusion of OnRequest options, inclusion of only the cheapest or all
+  // options, setting the market, language, currency, sorting and filters etc.
+  ttm.types.v4.SearchParameters search_parameters = 2 [(buf.validate.field).required = true];
+
+  // Activity specific search parameters
+  //
+  // Here we set for example a list of activity product codes that we want to search
+  // for, set min or mar duration or price.
+  ttm.services.activity.v5.ActivitySearchParameters search_parameters_activity = 3;
+
+  // Date range for when the activity will take place or be available
+  ttm.types.v4.TravelPeriod travel_period = 4 [(buf.validate.field).required = true];
+
+  // Information about each person who will participate in the activity
+  repeated ttm.types.v4.BasicTraveller travellers = 5 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 15
+  }];
+
+  // For search, set only one of the fields at once. Source location indicates the
+  // customer’s position at the start of the service. Typical value would be the
+  // stay hotel or the touristic destination. The source location is needed for
+  // service and transfer availability, pickup location and pickup time calculation.
+  // Setting the source_location will reduce the list of options to the activities
+  // that can be serviced. In the example of Disney World and Orlando it will reduce
+  // the list substantially as the non-relevant pick-up points will not be included.
+  //
+  // This one of field enforces only one of the fields below. They all share memory,
+  // setting one will remove the others.
+  oneof source_location {
+    // The code and code type of a stay location the provider will be able to process
+    // Ex. GiataID
+    ttm.types.v4.LocationCodes source_location_codes = 6;
+
+    // Single geographic point represented by two double fields.
+    ttm.types.v4.Coordinates source_location_coordinates = 7;
+
+    // Geo tree type, represented by Country, Region, and City_or_Resort.
+    ttm.types.v4.GeoTree source_location_geo_tree = 8;
+
+    // Geo circle. Represented by a coordinate and a distance for radius
+    ttm.types.v4.GeoCircle source_location_geo_circle = 9;
+
+    // Geo polygon. Represented by a list of coordinate points.
+    ttm.types.v4.GeoPolygon source_location_geo_polygon = 10;
+  }
+
+  // For search, set only one of the field at once. Service location specifies the
+  // areas involved in a ticket or excursion service. Service location indicates the
+  // area of the requested services. Typical value would be the region or resort.
+  //
+  // This one of field enforces only one of the fields below. They all share memory,
+  // setting one will remove the others.
+  oneof service_location {
+    // The code and code type of a stay location the distributor will be able to
+    // process. Ex. Google Place ID, Foursquare fsq_id, OpenStreetMap Ref, Here ID or
+    // any other agreed code type.
+    ttm.types.v4.LocationCodes service_location_codes = 11;
+
+    // Single geographic point represented by two double fields.
+    ttm.types.v4.Coordinates service_location_coordinates = 12;
+
+    // Geo tree type, represented by Country, Region, and City_or_Resort.
+    ttm.types.v4.GeoTree service_location_geo_tree = 13;
+
+    // Geo circle. Represented by a coordinate and a distance for radius
+    ttm.types.v4.GeoCircle service_location_geo_circle = 14;
+
+    // Geo polygon. Represented by a list of coordinate points.
+    ttm.types.v4.GeoPolygon service_location_geo_polygon = 15;
+  }
+}
+
+message ActivitySearchSuccessResponse {
+  // Message header. Contains API version, message info string and end user wallet
+  // address.
+  ttm.types.v4.SuccessResponseHeader header = 1 [(buf.validate.field).required = true];
+
+  // Search_id to be used in subsequent requests like the "Validation Request".
+  ttm.types.v4.ExpiringUUID search_id = 2 [(buf.validate.field).required = true];
+
+  // Unique combinations of bookable search results, each identified by a result_id
+  // that needs to be carried through to the validate request.
+  repeated ttm.services.activity.v5.ActivitySearchResult results = 3 [(buf.validate.field).repeated = {
+    min_items: 0
+    max_items: 10000
+  }];
+
+  // Repeated travellers from the request. Used for validating the response.
+  repeated ttm.types.v4.BasicTraveller travellers = 4 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 15
+  }];
+}
+
+message ActivitySearchErrorResponse {
+  // Common error response header used in every error response.
+  ttm.types.v4.ErrorResponseHeader header = 1 [(buf.validate.field).required = true];
+}
+
+message ActivitySearchResponse {
+  oneof response {
+    option (buf.validate.oneof).required = true; // One must be provided
+    ttm.services.activity.v5.ActivitySearchSuccessResponse success_response = 1;
+    ttm.services.activity.v5.ActivitySearchErrorResponse error_response = 2;
+  }
+}
+
+// Activity Search Service
+//
+// Takes `ActivitySearchRequest` message type and returns `ActivitySearchResponse` message type.
+//
+// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/activity/v5/search.proto.dot.xs.svg)
+//
+// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/activity/v5/search.proto.dot.svg)
+//
+/// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
+service ActivitySearchService {
+  rpc ActivitySearch(ActivitySearchRequest) returns (ActivitySearchResponse);
+}

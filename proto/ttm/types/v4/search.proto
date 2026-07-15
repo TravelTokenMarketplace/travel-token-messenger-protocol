@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package ttm.types.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/types/v1/content_source.proto";
+import "ttm/types/v1/language.proto";
+import "ttm/types/v2/country.proto";
+import "ttm/types/v4/currency.proto";
+import "ttm/types/v4/sorting.proto";
+import "ttm/types/v4/uuid.proto";
+
+// Search parameters for the search requests
+//
+// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/search.proto.dot.xs.svg)
+//
+// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/search.proto.dot.svg)
+message SearchParameters {
+  // Requested currency in which prices have to be supplied in the response
+  // according to ISO 4217 Currency codes
+  ttm.types.v4.Currency currency = 1 [(buf.validate.field).required = true];
+
+  // Requested language setting for descriptions in the response according to ISO
+  // 639-1 Language codes
+  ttm.types.v1.Language language = 2 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+
+  // Request generated for a specific market according to ISO 3166-1 Country codes
+  ttm.types.v2.Country market = 3;
+
+  // Request generated for a specific brand or point-of-sale by one distributor
+  // Specify one or more brand codes or distribution channels for which assigned
+  // product is to be included in the search response
+  repeated string brand_codes = 4 [(buf.validate.field).repeated = {
+    max_items: 100 // Default max items
+    items: {
+      string: {max_bytes: 512}
+    }
+  }];
+
+  // Include OnRequest options in the response or only immediately bookable options
+  bool include_on_request = 5;
+
+  // Only show the cheapest option for one product, or include all possible
+  // combinations
+  bool include_combinations = 6;
+
+  // Limit the maximum number of results included in the response (per query). Zero
+  // value means there is no limit.
+  uint32 max_results = 7;
+
+  // Specify the sorting required in the response. If this is not set, the supplier
+  // defines the sorting type and order.
+  ttm.types.v4.Sorting sorting = 8;
+
+  // Free-text field to provide more details for better offer personalization. This
+  // field can be provided in combination with a Geo location or as stand-alone.
+  // If speech is provided as a recording for better offer personalization, then
+  // the recording has to be processed to text.
+  // This field can be provided in combination with a Geo location
+  // or as stand-alone.
+  string search_description_text = 9 [(buf.validate.field).string = {
+    min_len: 0
+    max_len: 1000
+  }];
+
+  // Content source types for this search request to specify which sources to
+  // include.
+  //
+  // Ex: ContentSourceType.CONTENT_SOURCE_TYPE_GDS,
+  // ContentSourceType.CONTENT_SOURCE_TYPE_NDC
+  // ContentSourceType.CONTENT_SOURCE_TYPE_3RD_PARTY
+  repeated ttm.types.v1.ContentSourceType content_source_types = 10 [(buf.validate.field).repeated = {
+    unique: true
+    items: {
+      enum: {
+        defined_only: true
+        not_in: [0]
+      }
+    }
+  }];
+}
+
+// Identifier for an individual result within a specific search.
+message SearchResultIdentifier {
+  // Search ID that is returned in the search response message.
+  ttm.types.v4.UUID search_id = 1 [(buf.validate.field).required = true];
+
+  // Result ID that is returned by `result_id` field of the search result
+  // messages, for example: `AccommodationSearchResult`.
+  uint32 result_id = 2;
+}

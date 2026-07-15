@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+package ttm.services.info.v2;
+
+import "google/protobuf/timestamp.proto";
+import "ttm/types/v1/common.proto";
+import "ttm/types/v1/datetime_range.proto";
+import "ttm/types/v1/filter.proto";
+import "ttm/types/v1/language.proto";
+import "ttm/types/v1/localized.proto";
+import "ttm/types/v1/travel_type.proto";
+import "ttm/types/v1/uuid.proto";
+import "ttm/types/v2/country.proto";
+
+// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/info/v2/entry_requirements.proto.dot.xs.svg)
+//
+// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/info/v2/entry_requirements.proto.dot.svg)
+//
+/// @custom:ttm-service type:product routing:p2p on-chain:false
+service CountryEntryRequirementsService {
+  rpc CountryEntryRequirements(CountryEntryRequirementsRequest) returns (CountryEntryRequirementsResponse);
+}
+
+message CountryEntryRequirementsRequest {
+  // Message header
+  ttm.types.v1.RequestHeader header = 1;
+
+  // Departure country
+  ttm.types.v2.Country departure = 2;
+
+  // Destination country
+  ttm.types.v2.Country destination = 3;
+
+  // Citizenship
+  ttm.types.v2.Country citizenship = 4;
+
+  // Residence
+  ttm.types.v2.Country residence = 5;
+
+  // Transit country
+  ttm.types.v2.Country transit = 6;
+
+  // Travel type, ex: business or tourism
+  ttm.types.v1.TravelType travel_type = 7;
+
+  // Date time range, start and end dates of visit, as timestamp.
+  ttm.types.v1.DateTimeRange datetime_range = 8;
+
+  // Languages requested
+  repeated ttm.types.v1.Language languages = 9;
+
+  bool exclude_categories = 10;
+
+  bool include_items = 11;
+
+  // There is not yet any categorization standard and conclusively filters are
+  // supplier specific and the filter type should be "FILTER_TYPE_PROVIDER_CODE"
+  // Examples:
+  repeated ttm.types.v1.Filter filters = 12;
+}
+
+message CountryEntryRequirementsResponse {
+  // Message header
+  ttm.types.v1.ResponseHeader header = 1;
+
+  // This must be a UUID according to RFC 4122
+  ttm.types.v1.UUID response_id = 2;
+
+  // Categories
+  repeated ttm.services.info.v2.CountryEntryRequirementCategory categories = 3;
+
+  // Items
+  repeated ttm.services.info.v2.CountryEntryRequirementItem items = 4;
+}
+
+// Types
+
+message CountryEntryRequirementCategory {
+  // Category key.
+  string key = 1;
+
+  // List of localized names
+  repeated ttm.types.v1.LocalizedString names = 2;
+
+  // Items
+  repeated ttm.services.info.v2.CountryEntryRequirementItem items = 3;
+
+  // Sub categories
+  repeated ttm.services.info.v2.CountryEntryRequirementCategory sub_categories = 4;
+}
+
+message CountryEntryRequirementItem {
+  // Item type key.  FIXME: Can this field be an enum?
+  string key = 1;
+
+  // Language specific names and descriptions
+  repeated ttm.services.info.v2.LocalizedItemInfo info = 2;
+
+  // Status of the item. An item specifies an action or requirement which should be
+  // done/provided or rather not. This is expressed with "true" and "false".
+  // Examples:
+  // Entry generally permitted, status=true
+  // EU Digital COVID Certificate accepted, status=true
+  // Visa required for stay, status=false
+  // Entry forms required, status=false
+  // Additional information, status=undefined
+  ttm.services.info.v2.ItemStatus status = 3;
+
+  // Significant update date
+  //
+  // Timestamps may be used for both off-chain and on-chain operations.
+  // For on-chain operations, only seconds are supported, and nanoseconds
+  // will be ignored.
+  google.protobuf.Timestamp last_significant_update = 4;
+}
+
+message LocalizedItemInfo {
+  string name = 1;
+  string description = 2;
+  ttm.types.v1.Language language = 3;
+}
+
+// Status identifies whether an item should be done/provided or rather not. In case
+// of an incident, there might be restrictions.
+//
+// UNKNOWN is different from UNSPECIFIED. For UNKNOWN information about this topic
+// was sought, but it was not possible to find enough information to classify that
+// topic
+enum ItemStatus {
+  ITEM_STATUS_UNSPECIFIED = 0;
+  ITEM_STATUS_TRUE = 1;
+  ITEM_STATUS_FALSE = 2;
+  ITEM_STATUS_CRISIS = 3;
+  ITEM_STATUS_RESTRICTIONS = 4;
+  ITEM_STATUS_NO_RESTRICTIONS = 5;
+  ITEM_STATUS_UNKNOWN = 6;
+}

@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package ttm.services.seat_map.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/types/v1/language.proto";
+import "ttm/types/v4/common.proto";
+import "ttm/types/v4/seat_map.proto";
+
+// Request for seat map data
+//
+// Requests the seat map data for a given map ID
+message SeatMapRequest {
+  // Common request header used in every request.
+  ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];
+
+  // Unique identifier for the seat map
+  //
+  // This is the map ID that is received in the search results and also from the
+  // product info responses.
+  ttm.types.v4.SeatMapID map_id = 2 [(buf.validate.field).required = true];
+
+  // Languages in which seat map labels and descriptions should be returned
+  repeated ttm.types.v1.Language languages = 3 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 100
+    unique: true
+    items: {
+      enum: {
+        defined_only: true
+        not_in: [0]
+      }
+    }
+  }];
+}
+
+message SeatMapSuccessResponse {
+  // Response header
+  //
+  // Header contains information about the response
+  ttm.types.v4.SuccessResponseHeader header = 1 [(buf.validate.field).required = true];
+
+  // Seat map data
+  //
+  // Contains the seat map data for the requested map ID
+  ttm.types.v4.SeatMap seat_map = 2;
+}
+
+message SeatMapErrorResponse {
+  // Common error response header used in every error response.
+  ttm.types.v4.ErrorResponseHeader header = 1 [(buf.validate.field).required = true];
+}
+
+// Response for seat map request
+//
+// Contains the seat map data for a given map ID
+message SeatMapResponse {
+  oneof response {
+    option (buf.validate.oneof).required = true; // One must be provided
+    ttm.services.seat_map.v4.SeatMapSuccessResponse success_response = 1;
+    ttm.services.seat_map.v4.SeatMapErrorResponse error_response = 2;
+  }
+}
+
+// Service for requesting seat map data for a given map ID
+//
+// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/seat_map/v4/seat_map.proto.dot.xs.svg)
+//
+// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/seat_map/v4/seat_map.proto.dot.svg)
+//
+/// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
+service SeatMapService {
+  // Get seat map data
+  //
+  // Requests the seat map data for a given map ID
+  rpc SeatMap(SeatMapRequest) returns (SeatMapResponse);
+}

@@ -47,8 +47,8 @@ check_service() {
     fi
 
     # First, check basic format (more permissive)
-    if ! [[ $tag =~ ^@custom:cmp-service[[:space:]]+type:([[:alnum:]]+)[[:space:]]+routing:([[:alnum:]]+)([[:space:]]+on-chain:([[:alnum:]]+))?([[:space:]]+structure:([[:digit:]]+))?$ ]]; then
-        invalid_tag_services+=("$filepath:$service_name|$tag - Malformed tag format: must follow '@custom:cmp-service type:<TYPE> routing:<ROUTING> [on-chain:<BOOL>] [structure:<INT>]'")
+    if ! [[ $tag =~ ^@custom:ttm-service[[:space:]]+type:([[:alnum:]]+)[[:space:]]+routing:([[:alnum:]]+)([[:space:]]+on-chain:([[:alnum:]]+))?([[:space:]]+structure:([[:digit:]]+))?$ ]]; then
+        invalid_tag_services+=("$filepath:$service_name|$tag - Malformed tag format: must follow '@custom:ttm-service type:<TYPE> routing:<ROUTING> [on-chain:<BOOL>] [structure:<INT>]'")
         return
     fi
 
@@ -96,7 +96,7 @@ scan_proto_files() {
                 prev_line=$(grep -B 1 "^[[:space:]]*service[[:space:]]\+${service_name}[[:space:]]*{" "$file" | head -n 1)
 
                 # Check if previous line contains the custom tag
-                if [[ $prev_line =~ ///[[:space:]]*(@custom:cmp-service.*) ]]; then
+                if [[ $prev_line =~ ///[[:space:]]*(@custom:ttm-service.*) ]]; then
                     check_service "$file" "$service_name" "${BASH_REMATCH[1]}" "$file"
                 else
                     check_service "$file" "$service_name" "" "$file"
@@ -123,7 +123,7 @@ colorize_tag() {
     local STRUCTURE="${LYELLOW}"
 
     # Extract each part using regex
-    if [[ $tag =~ ^(@custom:cmp-service)[[:space:]]+(type:([[:alnum:]]+))[[:space:]]+(routing:([[:alnum:]]+))([[:space:]]+on-chain:([[:alnum:]]+))?([[:space:]]+structure:([[:digit:]]+))?$ ]]; then
+    if [[ $tag =~ ^(@custom:ttm-service)[[:space:]]+(type:([[:alnum:]]+))[[:space:]]+(routing:([[:alnum:]]+))([[:space:]]+on-chain:([[:alnum:]]+))?([[:space:]]+structure:([[:digit:]]+))?$ ]]; then
         local prefix="${BASH_REMATCH[1]}"
         local type_full="${BASH_REMATCH[2]}"
         local type_value="${BASH_REMATCH[3]}"
@@ -223,7 +223,7 @@ fi
 scan_proto_files "$1"
 
 # Print results
-echo -e "\n${LGREEN}${SUCCESS} Services with valid @custom:cmp-service tag:${NC}"
+echo -e "\n${LGREEN}${SUCCESS} Services with valid @custom:ttm-service tag:${NC}"
 echo "================================================="
 if [ ${#valid_tag_services[@]} -eq 0 ]; then
     echo -e "  ${INFO} No services found with valid tags"
@@ -233,7 +233,7 @@ else
     done
 fi
 
-echo -e "\n${BYELLOW}${WARNING} Services with invalid @custom:cmp-service tag:${NC}"
+echo -e "\n${BYELLOW}${WARNING} Services with invalid @custom:ttm-service tag:${NC}"
 echo "================================================="
 if [ ${#invalid_tag_services[@]} -eq 0 ]; then
     echo -e "  ${INFO} No services found with invalid tags"
@@ -246,7 +246,7 @@ else
     EXIT_CODE=1
 fi
 
-echo -e "\n${RED}${ERROR} Services without @custom:cmp-service tag:${NC}"
+echo -e "\n${RED}${ERROR} Services without @custom:ttm-service tag:${NC}"
 echo "================================================="
 if [ ${#no_tag_services[@]} -eq 0 ]; then
     echo -e "  ${INFO} No services found without tags"

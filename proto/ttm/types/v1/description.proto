@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package ttm.types.v1;
+
+import "ttm/types/v1/language.proto";
+
+// Localized description set for a given language
+//
+// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/description.proto.dot.xs.svg)
+//
+// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/description.proto.dot.svg)
+message LocalizedDescriptionSet {
+  // Language
+  ttm.types.v1.Language language = 1;
+
+  // Description set
+  repeated ttm.types.v1.Description descriptions = 2;
+}
+
+message Description {
+  // Category of the description like "General", "Amenities".
+  string category = 1;
+
+  // Description text
+  string text = 2;
+}
