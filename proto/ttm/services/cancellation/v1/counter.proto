@@ -9,7 +9,6 @@ import "ttm/types/v3/price.proto";
 
 // Request for countering a cancellation
 //
-//
 message CounterCancellationRequest {
   // Request header
   ttm.types.v1.RequestHeader header = 1;

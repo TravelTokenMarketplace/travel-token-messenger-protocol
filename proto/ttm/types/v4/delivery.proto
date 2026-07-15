@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Delivery Formats and Methods
 //
-//
 message Delivery {
   ttm.types.v4.DeliveryFormat format = 1 [(buf.validate.field).enum = {
     defined_only: true

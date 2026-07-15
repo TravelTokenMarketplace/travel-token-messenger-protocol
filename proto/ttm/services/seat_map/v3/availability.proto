@@ -49,8 +49,6 @@ message SeatMapAvailabilityResponse {
 //
 // Service is used to request the seat map availability data for a given map ID
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false
 service SeatMapAvailabilityService {
   // Get seat map availability data

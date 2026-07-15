@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Rate Rule
 //
-//
 message RateRule {
   // RateRule
   //

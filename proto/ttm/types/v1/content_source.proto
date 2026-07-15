@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Content Source Type message type. TODO: Add documentation to explain the purpose of this message
 //
-//
 enum ContentSourceType {
   CONTENT_SOURCE_TYPE_UNSPECIFIED = 0;
   CONTENT_SOURCE_TYPE_GDS = 1;

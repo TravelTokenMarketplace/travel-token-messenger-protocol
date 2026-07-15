@@ -9,7 +9,6 @@ import "ttm/types/v4/evm_transaction.proto";
 
 // Request for withdrawal of an active cancellation proposal
 //
-//
 message WithdrawCancellationRequest {
   // Request header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

@@ -12,7 +12,6 @@ import "ttm/types/v2/currency.proto";
 
 // Search parameters for the search requests
 //
-//
 message SearchParameters {
   // Requested currency in which prices have to be supplied in the response
   // according to ISO 4217 Currency codes

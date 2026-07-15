@@ -110,8 +110,6 @@ message InsuranceSearchResponse {
 
 // Service definition for Insurance search
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service InsuranceSearchService {
   // Insurance Search method

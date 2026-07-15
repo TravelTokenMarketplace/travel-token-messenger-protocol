@@ -6,7 +6,6 @@ import "ttm/types/v1/measurement.proto";
 
 // Baggage message type
 //
-//
 message Baggage {
   // Baggage type
   //

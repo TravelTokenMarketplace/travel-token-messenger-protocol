@@ -7,7 +7,6 @@ import "ttm/types/v1/dow.proto";
 
 // Travel Period
 //
-//
 message TravelPeriod {
   // Start date of a trip for messages where no Date/Time is required
   // (datetime_range.proto) when the travelling starts. Most trips will be for an

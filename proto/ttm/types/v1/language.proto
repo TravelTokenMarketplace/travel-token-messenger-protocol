@@ -6,7 +6,6 @@ package ttm.types.v1;
 // first. This is done to use the smaller values more frequently and thus consume
 // less bytes for this field.
 //
-//
 enum Language {
   LANGUAGE_UNSPECIFIED = 0;
   LANGUAGE_AR = 1; // Arabic

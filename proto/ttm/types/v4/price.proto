@@ -12,7 +12,6 @@ import "ttm/types/v4/price_types.proto";
 // Breakdown is a recursively inherited object of PriceDetail. This way complex
 // pricing structures can be represented.
 //
-//
 message PriceDetail {
   // Principle price element
   ttm.types.v4.Price price = 1 [(buf.validate.field).required = true];

@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Time duration in minutes
 //
-//
 message Duration {
   int32 minutes = 1;
 }

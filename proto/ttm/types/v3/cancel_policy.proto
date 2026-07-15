@@ -12,7 +12,6 @@ import "ttm/types/v3/price.proto";
 // - A "free cancellation upto" DateTime
 // - Complete cancellation policies with from/to DateTime stamps
 //
-//
 message CancelPolicy {
   // the search result is refundable or not (at least one cancellation penalty exists
   // that provides a (partial) refund)

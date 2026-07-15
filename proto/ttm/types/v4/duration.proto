@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Represents a period of time expressed in minutes.
 //
-//
 message Duration {
   // The duration specified in minutes.
   // Must be a non-negative value.

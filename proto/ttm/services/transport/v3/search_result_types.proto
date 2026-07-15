@@ -13,7 +13,6 @@ import "ttm/types/v3/price.proto";
 
 // Transport search result
 //
-//
 message TransportSearchResult {
   // Unique result ID
   int32 result_id = 1;

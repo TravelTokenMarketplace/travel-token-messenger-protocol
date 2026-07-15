@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Phone type to be used in various types as hotels, holiday homes etc.
 //
-//
 message Phone {
   string number = 1;
 

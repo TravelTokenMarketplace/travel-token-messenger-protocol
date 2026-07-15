@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Email type for general use.
 //
-//
 message Email {
   string address = 1 [(buf.validate.field).string.email = true];
 

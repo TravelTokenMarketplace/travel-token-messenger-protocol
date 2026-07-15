@@ -10,7 +10,6 @@ import "ttm/types/v4/measurement.proto";
 //
 // These coordinates define a single point on the Earth's surface.
 //
-//
 message Coordinates {
   // The latitude, in degrees. Must be between -90.0 and +90.0.
   double latitude = 1 [(buf.validate.field).double = {

@@ -15,7 +15,6 @@ import "ttm/types/v4/rate.proto";
 // While all fields in this message are optional at the message level, each supplier
 // may define their own minimum set of required filter parameters.
 //
-//
 message AccommodationSearchParameters {
   // The geo location used for the search.
   oneof geo_location {

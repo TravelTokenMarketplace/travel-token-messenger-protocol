@@ -9,7 +9,6 @@ import "ttm/types/v3/price.proto";
 
 // These are Activity specific search parameters
 //
-//
 message ActivitySearchParameters {
   // Specify the language(s) a potential guide should speak for example a tour in
   // the Anne Frank house in Amsterdam in French or the tour at the pyramids in

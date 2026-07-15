@@ -7,7 +7,6 @@ import "google/protobuf/timestamp.proto";
 
 // This must be a UUID according to RFC 4122 standard.
 //
-//
 message UUID {
   // This ensures that value is a valid [RFC 4122](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.2)
   string value = 1 [(buf.validate.field).string.uuid = true];

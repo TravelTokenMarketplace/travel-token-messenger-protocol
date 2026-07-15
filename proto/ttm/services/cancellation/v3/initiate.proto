@@ -10,7 +10,6 @@ import "ttm/types/v5/price.proto";
 
 // Request for initiation of a cancellation proposal
 //
-//
 message InitiateCancellationRequest {
   // The request header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

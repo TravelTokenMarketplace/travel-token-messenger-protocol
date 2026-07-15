@@ -4,7 +4,6 @@ package ttm.types.v2;
 
 // Token Reference
 //
-//
 message TokenCurrency {
   string contract_address = 1;
 }

@@ -133,7 +133,6 @@ message MintResponse {
 }
 
 //
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:true structure:2
 service MintService {
   rpc Mint(MintRequest) returns (MintResponse);

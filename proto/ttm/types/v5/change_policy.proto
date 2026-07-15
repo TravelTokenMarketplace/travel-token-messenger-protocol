@@ -13,7 +13,6 @@ import "ttm/types/v5/price.proto";
 // - Complex change policies with from/to DateTime stamps, individual prices
 //   and rateplan applicability
 //
-//
 message ChangePolicy {
   oneof policy_type {
     option (buf.validate.oneof).required = true;

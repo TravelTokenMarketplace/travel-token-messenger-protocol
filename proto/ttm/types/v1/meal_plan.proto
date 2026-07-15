@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Meal Plan message type
 //
-//
 message MealPlan {
   // Meal Plan Code
   //

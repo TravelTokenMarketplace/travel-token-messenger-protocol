@@ -11,7 +11,6 @@ import "ttm/types/v5/total_price.proto";
 // This type represents a search result and is used in the `ActivitySearchResponse`
 // message.
 //
-//
 message ActivitySearchResult {
   // This is an increasing number starting at 0 and increasing by 1 for every search
   // result.

@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Document type to be used in various messages
 //
-//
 message Document {
   string document_number = 1;
   ttm.types.v1.DocumentType document_type = 2;

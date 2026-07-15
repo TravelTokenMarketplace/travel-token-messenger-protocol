@@ -28,8 +28,6 @@ message AccommodationProductListResponse {
 
 // Accommodation product list service definition
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false
 service AccommodationProductListService {
   // Returns product list for accommodation (properties)

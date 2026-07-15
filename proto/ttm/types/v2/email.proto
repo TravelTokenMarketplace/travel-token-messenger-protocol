@@ -4,7 +4,6 @@ package ttm.types.v2;
 
 // Email type for general use.
 //
-//
 message Email {
   string address = 1;
 

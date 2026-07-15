@@ -8,7 +8,6 @@ import "ttm/types/v3/price.proto";
 
 // Request for cancellation acceptance
 //
-//
 message AcceptCancellationRequest {
   // Request header
   ttm.types.v1.RequestHeader header = 1;

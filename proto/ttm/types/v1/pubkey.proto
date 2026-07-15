@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Public Key definitions
 //
-//
 message PublicKey {
   string key = 1;
 }

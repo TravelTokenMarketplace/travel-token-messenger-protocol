@@ -7,7 +7,6 @@ import "ttm/types/v4/date.proto";
 
 // Document type to be used in various messages
 //
-//
 message Document {
   // Example: Passport number, Driver's license number, etc.
   // The specific format or validation rules for the number may depend on the

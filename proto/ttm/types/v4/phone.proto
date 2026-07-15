@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Phone type to be used in various types as hotels, holiday homes etc.
 //
-//
 message Phone {
   string number = 1 [(buf.validate.field).string = {
     // E.164 format without extensions

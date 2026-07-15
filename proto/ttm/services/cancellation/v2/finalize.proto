@@ -9,7 +9,6 @@ import "ttm/types/v4/price.proto";
 
 // Request for finalization of a cancellation proposal
 //
-//
 message FinalizeCancellationRequest {
   // The request header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

@@ -9,7 +9,6 @@ import "ttm/types/v4/evm_transaction.proto";
 
 // Request for cancellation rejection
 //
-//
 message RejectCancellationRequest {
   // Request Header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

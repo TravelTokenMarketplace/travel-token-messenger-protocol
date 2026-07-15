@@ -10,7 +10,6 @@ import "ttm/types/v4/document.proto";
 
 // Traveller
 //
-//
 message BasicTraveller {
   // Guest number, the lowest number is the lead-pax. This ID is also used for
   // referencing services linked to specific participants, like baggage.

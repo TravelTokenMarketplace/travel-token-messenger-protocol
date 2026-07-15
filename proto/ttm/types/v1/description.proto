@@ -6,7 +6,6 @@ import "ttm/types/v1/language.proto";
 
 // Localized description set for a given language
 //
-//
 message LocalizedDescriptionSet {
   // Language
   ttm.types.v1.Language language = 1;

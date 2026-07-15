@@ -21,7 +21,6 @@ message Currency {
 // First 20 currencies are the most traded currencies in the world. This is done to
 // optimize the size of the protobuf message size.
 //
-//
 enum IsoCurrency {
   ISO_CURRENCY_UNSPECIFIED = 0; // Placeholder or unspecified currency
 

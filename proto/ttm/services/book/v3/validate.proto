@@ -72,7 +72,6 @@ message ValidationObject {
 }
 
 //
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false
 service ValidationService {
   rpc Validation(ValidationRequest) returns (ValidationResponse);

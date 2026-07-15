@@ -46,8 +46,6 @@ message AccommodationProductShortListResponse {
 // Accommodation product short list service definition. This is an alternative
 // to `AccommodationProductListService`.
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service AccommodationProductShortListService {
   // Returns product list for accommodation (properties) with only supplier codes.

@@ -4,7 +4,6 @@ package ttm.types.v4;
 
 // Themes to describe the type of a destination, accommodation, activity, etc.
 //
-//
 enum Theme {
   THEME_UNSPECIFIED = 0;
   THEME_BEACH = 1; // Beach and coastal destinations with sun, sand, and water activities

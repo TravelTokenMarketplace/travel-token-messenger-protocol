@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Meal Plan message type
 //
-//
 message MealPlan {
   // Meal Plan Code
   //

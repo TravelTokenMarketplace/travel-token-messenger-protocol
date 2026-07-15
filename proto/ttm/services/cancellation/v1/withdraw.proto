@@ -8,7 +8,6 @@ import "ttm/types/v3/evm_transaction.proto";
 
 // Request for withdrawal of an active cancellation proposal
 //
-//
 message WithdrawCancellationRequest {
   // Request header
   ttm.types.v1.RequestHeader header = 1;

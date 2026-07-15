@@ -10,7 +10,6 @@ import "ttm/types/v4/price.proto";
 
 // Request for countering a cancellation
 //
-//
 message CounterCancellationRequest {
   // Request header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

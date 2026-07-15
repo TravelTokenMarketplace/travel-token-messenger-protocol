@@ -10,7 +10,6 @@ import "ttm/types/v5/price_range.proto";
 
 // Transport Search Parameters
 //
-//
 message TransportSearchParameters {
   // Specify one or more trip supplier codes to be included in the search response
   // These must match the supplier codes provided in the ProductListResponse

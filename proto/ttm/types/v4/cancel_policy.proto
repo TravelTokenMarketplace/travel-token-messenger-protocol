@@ -13,7 +13,6 @@ import "ttm/types/v4/price.proto";
 // - Complex cancellation policies with from/to DateTime stamps, individual penalties
 //   and rateplan applicability
 //
-//
 message CancelPolicy {
   oneof policy_type {
     option (buf.validate.oneof).required = true;

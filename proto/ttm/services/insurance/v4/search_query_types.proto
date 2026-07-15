@@ -7,7 +7,6 @@ import "ttm/services/insurance/v4/search_parameters_types.proto";
 
 // Insurance Search Query
 //
-//
 message InsuranceSearchQuery {
   // Integer query ID, unique per search request
   uint32 query_id = 1;

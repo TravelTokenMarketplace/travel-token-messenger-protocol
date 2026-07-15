@@ -13,7 +13,6 @@ import "ttm/types/v3/service_fact.proto";
 
 // This message type represents a one way trip, either travelling or returning.
 //
-//
 message TripExtended {
   // Trip supplier code
   ttm.types.v2.SupplierProductCode supplier_code = 1;

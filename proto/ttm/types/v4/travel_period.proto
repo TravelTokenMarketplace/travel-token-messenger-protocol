@@ -12,7 +12,6 @@ import "ttm/types/v4/dow.proto";
 // and flexible periods (where start_date and end_date form a window for a
 // trip of a duration specified by `los`).
 //
-//
 message TravelPeriod {
   option (buf.validate.message).cel = {
     id: "end_date_after_or_on_start_date"

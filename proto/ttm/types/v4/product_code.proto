@@ -8,7 +8,6 @@ import "buf/validate/validate.proto";
 //
 // This is being used in requests to specify the a list of products to be included in the reponse
 //
-//
 message ProductCode {
   // In most cases like in accommodation, just the field "code" and "type" will be
   // used. For example in case of a GiataID (for example code=182568), a provider

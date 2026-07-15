@@ -6,7 +6,6 @@ import "ttm/types/v1/date.proto";
 
 // Credit card definition
 //
-//
 message CreditCard {
   // A creditcard should be stored as a string to facilitate cards that have leading
   // zeros, but also to allow for spaces or dashes for readability, like for example

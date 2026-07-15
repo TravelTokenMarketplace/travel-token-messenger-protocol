@@ -10,7 +10,6 @@ import "ttm/types/v1/language.proto";
 // This message is used to provide textual content, such as names or short labels,
 // that need to be displayed in multiple languages.
 //
-//
 message LocalizedString {
   // The actual text content of the string.
   string text = 1 [(buf.validate.field).string = {

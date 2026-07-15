@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Rate Rule
 //
-//
 message RateRule {
   // Rate rule code
   string code = 1 [(buf.validate.field).string = {

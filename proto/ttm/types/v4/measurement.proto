@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Length
 //
-//
 message Length {
   uint32 value = 1;
   ttm.types.v4.LengthUnit unit = 2 [(buf.validate.field).enum = {

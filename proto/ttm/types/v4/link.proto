@@ -6,7 +6,6 @@ import "buf/validate/validate.proto";
 
 // Link is used to represent websites, social media contact, online check-in url, ... etc
 //
-//
 message Link {
   // Link type
   ttm.types.v4.LinkType type = 1 [(buf.validate.field).enum.defined_only = true];

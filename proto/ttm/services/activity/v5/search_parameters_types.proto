@@ -14,7 +14,6 @@ import "ttm/types/v5/price_range.proto";
 // While all fields in this message are optional at the message level, each supplier
 // may define their own minimum set of required filter parameters.
 //
-//
 message ActivitySearchParameters {
   // Specify the language(s) a potential guide should speak for example a tour in
   // the Anne Frank house in Amsterdam in French or the tour at the pyramids in

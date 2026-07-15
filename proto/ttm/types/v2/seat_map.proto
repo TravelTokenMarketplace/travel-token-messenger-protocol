@@ -75,7 +75,6 @@ message Section {
 // of seating within a venue. This message provides a comprehensive overview of the
 // seating arrangement, including sections, images, and localized descriptions.
 //
-//
 message SeatMap {
   // Unique identifier for the seat map
   string id = 1;

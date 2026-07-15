@@ -9,7 +9,6 @@ import "ttm/types/v2/country.proto";
 //
 // Represents a geographic location
 //
-//
 message Coordinates {
   // The latitude in degrees. It must be in the range [-90.0, +90.0].
   double latitude = 1;

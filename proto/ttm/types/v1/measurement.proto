@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Length
 //
-//
 message Length {
   int32 value = 1;
   ttm.types.v1.LengthUnit unit = 2;

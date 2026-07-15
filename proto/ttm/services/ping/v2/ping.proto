@@ -55,8 +55,6 @@ message PingResponse {
 
 // The Ping Service definition
 //
-//
-//
 /// @custom:ttm-service type:core routing:p2p on-chain:false structure:2
 service PingService {
   // Ping Method

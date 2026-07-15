@@ -4,7 +4,6 @@ package ttm.services.cancellation.v1;
 
 // Cancellation Reasons
 //
-//
 enum CancellationReason {
   // Default unspecified value
   CANCELLATION_REASON_UNSPECIFIED = 0;

@@ -9,7 +9,6 @@ import "buf/validate/validate.proto";
 // This message is used for scenarios where only the date component is needed,
 // without time or timezone information.
 //
-//
 message Date {
   // The year of the date. For example, 2025.
   uint32 year = 1 [(buf.validate.field).uint32 = {lte: 9999}];

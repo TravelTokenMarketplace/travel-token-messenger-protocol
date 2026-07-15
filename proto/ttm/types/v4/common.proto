@@ -35,7 +35,6 @@ import "ttm/types/v4/evm_address.proto";
 
 // Header provides common metadata for Travel Token Messenger Protocol messages.
 //
-//
 message Header {
   // The version of the Travel Token Messenger Protocol bot or component processing/generating the message. This
   // field is crucial for transparency, version compatibility checks, and

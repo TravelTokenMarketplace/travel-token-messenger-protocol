@@ -9,7 +9,6 @@ import "ttm/types/v3/traveller.proto";
 
 // Accommodation Search Query
 //
-//
 message AccommodationSearchQuery {
   // Integer query ID, unique per search request
   int32 query_id = 1;

@@ -6,7 +6,6 @@ import "ttm/types/v3/evm_address.proto";
 
 // Token Reference
 //
-//
 message TokenCurrency {
   ttm.types.v3.EVMAddress contract_address = 1;
 }

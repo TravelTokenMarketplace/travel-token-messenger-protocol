@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Redemption Methods
 //
-//
 enum RedemptionMethod {
   REDEMPTION_METHOD_UNSPECIFIED = 0;
   REDEMPTION_METHOD_OTHER = 1;

@@ -6,7 +6,6 @@ package ttm.types.v1;
 //
 // This must be a UUID according to RFC 4122 standard.
 //
-//
 message UUID {
   string value = 1;
 }

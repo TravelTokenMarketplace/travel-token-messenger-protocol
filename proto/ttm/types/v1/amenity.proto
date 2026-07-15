@@ -31,7 +31,6 @@ package ttm.types.v1;
 // )
 // ```
 //
-//
 message Amenity {
   // Amenity type like INTERNET, POOL, FOOD_BEVERAGE
   ttm.types.v1.AmenityType type = 1;

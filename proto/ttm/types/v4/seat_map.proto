@@ -118,7 +118,6 @@ message Section {
 // and can have an image to be referenced by sections and seats, as well as
 // localized descriptions.
 //
-//
 message SeatMap {
   // Unique identifier for this entire seat map (e.g., "venueName-standardLayout").
   ttm.types.v4.SeatMapID id = 1 [(buf.validate.field).required = true];

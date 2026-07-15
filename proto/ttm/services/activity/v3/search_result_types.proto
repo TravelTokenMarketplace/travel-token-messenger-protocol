@@ -10,7 +10,6 @@ import "ttm/types/v3/price.proto";
 // This type represents a search result and is used in the `ActivitySearchResponse`
 // message.
 //
-//
 message ActivitySearchResult {
   // Option ID for the search option. This is an increasing number starting at 0 and
   // increasing by 1 for every search result.

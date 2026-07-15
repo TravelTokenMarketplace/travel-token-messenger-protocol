@@ -6,7 +6,6 @@ import "google/protobuf/timestamp.proto";
 
 // Date range message that includes start and end datetime as timestamps.
 //
-//
 message DateTimeRange {
   //
   // Timestamps may be used for both off-chain and on-chain operations.

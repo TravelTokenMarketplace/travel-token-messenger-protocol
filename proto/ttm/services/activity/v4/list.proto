@@ -47,8 +47,6 @@ message ActivityProductListResponse {
 
 // This service is used to get a product list for activities.
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service ActivityProductListService {
   rpc ActivityProductList(ActivityProductListRequest) returns (ActivityProductListResponse);

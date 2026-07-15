@@ -11,8 +11,6 @@ import "ttm/types/v4/uuid.proto";
 
 // Notification service for different events that the partner should be notified about
 //
-//
-//
 /// @custom:ttm-service type:product routing:local on-chain:true
 service NotificationService {
   rpc TokenBoughtNotification(TokenBought) returns (google.protobuf.Empty);

@@ -8,7 +8,6 @@ import "buf/validate/validate.proto";
 //
 // This is being used in requests to specify the sorting required in the response.
 //
-//
 message Sorting {
   ttm.types.v4.SortingType sorting_type = 1 [(buf.validate.field).enum = {defined_only: true}];
   ttm.types.v4.SortingOrder sorting_order = 2 [(buf.validate.field).enum = {defined_only: true}];

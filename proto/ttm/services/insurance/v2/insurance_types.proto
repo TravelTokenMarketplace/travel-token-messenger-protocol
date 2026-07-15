@@ -12,7 +12,6 @@ import "ttm/types/v3/price.proto";
 
 // Insurance
 //
-//
 message Insurance {
   // Context for Inventory system concepts that need to be included in an info
   // response, like an OwnerCode, PTC_OfferParameters, Tax codes, Disclosure RefID,

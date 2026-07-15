@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Upfront filtering of possible search options in the search response
 //
-//
 message Filter {
   // Filters can be based on a type of a specific code standard or codes agreed
   // between provider and distributor in which case the type can be set to

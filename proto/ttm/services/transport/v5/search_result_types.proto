@@ -10,7 +10,6 @@ import "ttm/types/v5/total_price.proto";
 
 // Transport search result
 //
-//
 message TransportSearchResult {
   // Unique result ID
   uint32 result_id = 1;

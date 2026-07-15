@@ -15,7 +15,6 @@ enum ChargeType {
 
 // Price Type definitions
 //
-//
 enum PriceType {
   PRICE_TYPE_UNSPECIFIED = 0;
   PRICE_TYPE_BASE_RATE = 1;

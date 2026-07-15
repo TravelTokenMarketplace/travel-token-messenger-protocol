@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Delivery Formats and Methods
 //
-//
 enum DeliveryFormat {
   DELIVERY_FORMAT_UNSPECIFIED = 0;
   DELIVERY_FORMAT_OTHER = 1;

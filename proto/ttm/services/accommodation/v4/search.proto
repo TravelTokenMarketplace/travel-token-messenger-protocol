@@ -137,8 +137,6 @@ message AccommodationSearchResponse {
 
 // Service definition for Accommodation search
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service AccommodationSearchService {
   // Accommodation Search method

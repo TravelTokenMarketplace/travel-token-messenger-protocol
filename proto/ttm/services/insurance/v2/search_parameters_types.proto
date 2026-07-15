@@ -12,7 +12,6 @@ import "ttm/types/v3/traveller.proto";
 
 // This type is used in search requests for parameters like insured booking, network, ... etc
 //
-//
 message InsuranceSearchParameters {
   // Product code list
   // Here a list of product codes would be used that could be for various specific

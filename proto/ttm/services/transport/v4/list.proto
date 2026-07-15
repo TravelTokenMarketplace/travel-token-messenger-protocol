@@ -42,8 +42,6 @@ message TransportProductListResponse {
 
 // This service is used to get a product list for transportation.
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service TransportProductListService {
   // Gets an optional `modified_after` date and returns a product list.

@@ -20,8 +20,6 @@ import "ttm/services/cancellation/v3/withdraw.proto";
 
 // Cancellation service
 //
-//
-//
 /// @custom:ttm-service type:product routing:local on-chain:true structure:2
 service CancellationService {
   // Initiate cancellation

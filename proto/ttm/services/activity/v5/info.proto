@@ -53,8 +53,6 @@ message ActivityProductInfoResponse {
 
 // Activity product info service definition
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service ActivityProductInfoService {
   // Returns product list for activity

@@ -42,8 +42,6 @@ message SeatMapResponse {
 
 // Service for requesting seat map data for a given map ID
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false
 service SeatMapService {
   // Get seat map data

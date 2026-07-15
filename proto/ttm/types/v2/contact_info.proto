@@ -9,7 +9,6 @@ import "ttm/types/v2/email.proto";
 
 // Contact Info for general use.
 //
-//
 message ContactInfo {
   // Address
   repeated ttm.types.v2.Address address = 1;

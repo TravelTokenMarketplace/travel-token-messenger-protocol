@@ -16,7 +16,6 @@ import "ttm/types/v4/date.proto";
 // - The CVC (Card Verification Code) **MUST NEVER BE STORED** after transaction
 //   authorization.
 //
-//
 message CreditCard {
   // The primary account number (PAN) of the credit card.
   //

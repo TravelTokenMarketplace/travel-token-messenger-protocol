@@ -5,7 +5,6 @@ package ttm.types.v1;
 // Country options according to ISO 3166-1, with the 31 most popular countries
 // first, using fewer bytes in the code thus reducing message size.
 //
-//
 enum Country {
   COUNTRY_UNSPECIFIED = 0;
 

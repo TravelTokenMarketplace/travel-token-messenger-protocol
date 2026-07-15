@@ -151,8 +151,6 @@ message ActivitySearchResponse {
 //
 // Takes `ActivitySearchRequest` message type and returns `ActivitySearchResponse` message type.
 //
-//
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false
 service ActivitySearchService {
   rpc ActivitySearch(ActivitySearchRequest) returns (ActivitySearchResponse);

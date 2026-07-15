@@ -8,7 +8,6 @@ import "ttm/types/v3/price.proto";
 
 // Request for finalization of a cancellation proposal
 //
-//
 message FinalizeCancellationRequest {
   // The request header
   ttm.types.v1.RequestHeader header = 1;

@@ -13,7 +13,6 @@ import "ttm/types/v4/localized.proto";
 import "ttm/types/v4/uuid.proto";
 
 //
-//
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service CountryEntryRequirementsService {
   rpc CountryEntryRequirements(CountryEntryRequirementsRequest) returns (CountryEntryRequirementsResponse);

@@ -10,7 +10,6 @@ import "ttm/types/v2/product_code.proto";
 // This type is used in search requests for parameters like location, meal plan
 // codes etc.
 //
-//
 message AccommodationSearchParameters {
   // Geo Location for search, set only one of the fields at once.
   //

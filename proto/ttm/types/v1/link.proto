@@ -4,7 +4,6 @@ package ttm.types.v1;
 
 // Link is used to represent websites, social media contact, online check-in url, ... etc
 //
-//
 message Link {
   // Link type
   //

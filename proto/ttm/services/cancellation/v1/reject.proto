@@ -8,7 +8,6 @@ import "ttm/types/v3/evm_transaction.proto";
 
 // Request for cancellation rejection
 //
-//
 message RejectCancellationRequest {
   // Request Header
   ttm.types.v1.RequestHeader header = 1;

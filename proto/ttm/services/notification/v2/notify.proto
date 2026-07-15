@@ -10,8 +10,6 @@ import "ttm/types/v3/evm_transaction.proto";
 
 // Notification service for different events that the partner should be notified about
 //
-//
-//
 /// @custom:ttm-service type:product routing:local on-chain:true
 service NotificationService {
   rpc TokenBoughtNotification(TokenBought) returns (google.protobuf.Empty);

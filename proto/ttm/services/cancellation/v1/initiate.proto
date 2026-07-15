@@ -9,7 +9,6 @@ import "ttm/types/v3/price.proto";
 
 // Request for initiation of a cancellation proposal
 //
-//
 message InitiateCancellationRequest {
   // The request header
   ttm.types.v1.RequestHeader header = 1;
