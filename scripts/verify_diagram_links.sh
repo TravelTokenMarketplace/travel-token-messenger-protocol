@@ -5,7 +5,7 @@
 # Also check if the url has the correct path in it based on the proto file path.
 ERROR=0
 
-BASEURL="https://storage.googleapis.com/docs-cmp-files/diagrams/"
+BASEURL="https://traveltokenmarketplace.github.io/travel-token-messenger-protocol/"
 
 for file in $(find proto/ -name "*.proto"); do
 	#echo "Checking file: $file"

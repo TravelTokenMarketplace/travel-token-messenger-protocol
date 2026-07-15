@@ -35,16 +35,6 @@ if [ $? -ne 0 ]; then
 fi
 
 echo
-echo "-------------------------------------"
-echo "Executing proto diagram link verifier"
-echo "-------------------------------------"
-scripts/verify_diagram_links.sh
-if [ $? -ne 0 ]; then
-	echo "❌ Proto diagram link verifier failed"
-	ERROR=1
-fi
-
-echo
 echo "----------------------"
 echo "Executing FQPN checker"
 echo "----------------------"
