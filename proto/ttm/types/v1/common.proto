@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-// ## Travel Token Messenger Protocol (Travel Token Messenger Protocol) Types Package
+// ## Travel Token Messenger Protocol Types Package
 //
 // Commonly used message types across all Travel Token Messenger Protocol messages
 //
