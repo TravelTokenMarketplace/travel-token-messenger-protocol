@@ -156,6 +156,40 @@ jobs:
           draft: true
           buf_token: ${{ secrets.BUF_BSR_TOKEN }}
 
+  # Push the main branch to buf.build as a non-draft commit, advancing the `main`
+  # baseline label. The first run after dev->main seeds the label; subsequent runs
+  # advance it. Not gated on sanity-checks: a main push IS the baseline, so a
+  # breaking-check against itself is circular and would deadlock a fresh module.
+  bsr-push-main:
+    runs-on: ubuntu-latest
+    needs: [buf-lint]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    environment: main
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+      - name: Install Buf
+        run: |
+          # Install Buf
+          if [ "${{ env.buf_version }}" == "" ]; then
+            # Install latest version
+            sudo ./scripts/buf-installer.sh
+          else
+            # Install the defined version
+            sudo ./scripts/buf-installer.sh --version=${{ env.buf_version}}
+          fi
+      - name: Inject per-branch diagram links
+        run: |
+          # Inject GitHub Pages diagram links into this throwaway checkout (not committed),
+          # then verify they were injected correctly, before pushing to buf.build.
+          scripts/insert_diagram_link.sh ${{ github.ref_name }}
+          scripts/verify_diagram_links.sh ${{ github.ref_name }}
+      - name: Push to buf.build
+        uses: bufbuild/buf-push-action@v1
+        with:
+          input: "proto"
+          buf_token: ${{ secrets.BUF_BSR_TOKEN }}
+
   diagrams:
     runs-on: ubuntu-latest
     needs: [buf-lint, sanity-checks]
