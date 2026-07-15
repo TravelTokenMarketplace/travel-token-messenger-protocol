@@ -4,4 +4,4 @@
 # This is used by the dependency checker to determine whether a new version of a proto file can be reused
 # when it's not present in the c4t branch
 
-git ls-tree -r --name-only origin/c4t proto/cmp | grep -oP "cmp/.*\.proto" 
+git ls-tree -r --name-only origin/main proto/ttm | grep -oP "ttm/.*\.proto" 

@@ -92,7 +92,7 @@ def getC4TFiles():
 	c4t_files = []
 	c4t_folders = {}
 	try:
-		c4t_files = os.popen("scripts/create_c4t_file_listing.sh").read().splitlines()
+		c4t_files = os.popen("scripts/create_baseline_file_listing.sh").read().splitlines()
 		
 		for file in c4t_files:
 			folder = os.path.dirname(file)
