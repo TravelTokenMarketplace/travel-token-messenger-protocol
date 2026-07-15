@@ -12,9 +12,7 @@ import "ttm/types/v4/datetime_range.proto";
 import "ttm/types/v4/localized.proto";
 import "ttm/types/v4/uuid.proto";
 
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/info/v3/entry_requirements.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/info/v3/entry_requirements.proto.dot.svg)
 //
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service CountryEntryRequirementsService {

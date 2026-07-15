@@ -8,9 +8,7 @@ import "ttm/types/v3/evm_transaction.proto";
 
 // Request for withdrawal of an active cancellation proposal
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v1/withdraw.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v1/withdraw.proto.dot.svg)
 message WithdrawCancellationRequest {
   // Request header
   ttm.types.v1.RequestHeader header = 1;

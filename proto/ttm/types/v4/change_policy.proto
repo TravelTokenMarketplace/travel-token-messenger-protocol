@@ -13,9 +13,7 @@ import "ttm/types/v4/price.proto";
 // - Complex change policies with from/to DateTime stamps, individual prices
 //   and rateplan applicability
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/change_policy.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/change_policy.proto.dot.svg)
 message ChangePolicy {
   oneof policy_type {
     option (buf.validate.oneof).required = true;

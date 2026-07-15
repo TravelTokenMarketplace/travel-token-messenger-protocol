@@ -132,9 +132,7 @@ message MintResponse {
   }
 }
 
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/book/v4/mint.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/book/v4/mint.proto.dot.svg)
 //
 /// @custom:ttm-service type:product routing:p2p on-chain:true structure:2
 service MintService {

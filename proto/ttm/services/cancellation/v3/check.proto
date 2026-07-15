@@ -15,9 +15,7 @@ import "ttm/types/v5/price.proto";
 // - Determine the exact refund amount before proceeding with actual cancellation
 // - Understand rejection reasons when cancellation is not permitted
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v3/check.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v3/check.proto.dot.svg)
 //
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service CheckCancellationService {

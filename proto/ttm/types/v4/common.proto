@@ -35,9 +35,7 @@ import "ttm/types/v4/evm_address.proto";
 
 // Header provides common metadata for CMP messages.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/common.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/common.proto.dot.svg)
 message Header {
   // The version of the CMP bot or component processing/generating the message. This
   // field is crucial for transparency, version compatibility checks, and

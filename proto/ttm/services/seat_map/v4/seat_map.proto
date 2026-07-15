@@ -64,9 +64,7 @@ message SeatMapResponse {
 
 // Service for requesting seat map data for a given map ID
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/seat_map/v4/seat_map.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/seat_map/v4/seat_map.proto.dot.svg)
 //
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service SeatMapService {

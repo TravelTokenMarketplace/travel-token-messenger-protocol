@@ -9,9 +9,7 @@ import "ttm/types/v4/evm_transaction.proto";
 
 // Request for cancellation rejection
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v3/reject.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v3/reject.proto.dot.svg)
 message RejectCancellationRequest {
   // Request Header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

@@ -13,9 +13,7 @@ import "ttm/types/v4/travel_period.proto";
 
 // A Unit can represent a room in a hotel or an entire holiday home.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/accommodation/v4/unit_types.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/accommodation/v4/unit_types.proto.dot.svg)
 message Unit {
   // Room code of the unit in case of hotel. Ex: "RMSDDB0000". This code must explicitly
   // match the supplier_room_code in the ProductList and the ProductInfo messages, so that

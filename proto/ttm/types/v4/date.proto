@@ -9,9 +9,7 @@ import "buf/validate/validate.proto";
 // This message is used for scenarios where only the date component is needed,
 // without time or timezone information.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/date.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/date.proto.dot.svg)
 message Date {
   // The year of the date. For example, 2025.
   uint32 year = 1 [(buf.validate.field).uint32 = {lte: 9999}];

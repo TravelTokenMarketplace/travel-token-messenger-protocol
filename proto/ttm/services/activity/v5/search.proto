@@ -167,9 +167,7 @@ message ActivitySearchResponse {
 //
 // Takes `ActivitySearchRequest` message type and returns `ActivitySearchResponse` message type.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/activity/v5/search.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/activity/v5/search.proto.dot.svg)
 //
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service ActivitySearchService {

@@ -9,9 +9,7 @@ import "ttm/types/v4/price.proto";
 
 // Request for finalization of a cancellation proposal
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v2/finalize.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v2/finalize.proto.dot.svg)
 message FinalizeCancellationRequest {
   // The request header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

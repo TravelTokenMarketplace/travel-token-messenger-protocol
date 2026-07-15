@@ -13,9 +13,7 @@ enum ChargeType {
 
 // Price Type definitions
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/price_type.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/price_type.proto.dot.svg)
 enum PriceType {
   PRICE_TYPE_UNSPECIFIED = 0;
   PRICE_TYPE_BASE_RATE = 1;

@@ -20,9 +20,7 @@ import "ttm/services/cancellation/v2/withdraw.proto";
 
 // Cancellation service
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v2/services.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v2/services.proto.dot.svg)
 //
 /// @custom:ttm-service type:product routing:local on-chain:true structure:2
 service CancellationService {

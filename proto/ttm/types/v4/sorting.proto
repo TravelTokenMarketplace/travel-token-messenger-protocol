@@ -8,9 +8,7 @@ import "buf/validate/validate.proto";
 //
 // This is being used in requests to specify the sorting required in the response.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/sorting.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/sorting.proto.dot.svg)
 message Sorting {
   ttm.types.v4.SortingType sorting_type = 1 [(buf.validate.field).enum = {defined_only: true}];
   ttm.types.v4.SortingOrder sorting_order = 2 [(buf.validate.field).enum = {defined_only: true}];

@@ -10,9 +10,7 @@ import "ttm/types/v5/price_range.proto";
 
 // Transport Search Parameters
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/transport/v5/search_parameters_types.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/transport/v5/search_parameters_types.proto.dot.svg)
 message TransportSearchParameters {
   // Specify one or more trip supplier codes to be included in the search response
   // These must match the supplier codes provided in the ProductListResponse

@@ -11,9 +11,7 @@ import "google/protobuf/timestamp.proto";
 // requiring exact date and time boundaries, including timezone considerations
 // inherent in the `google.protobuf.Timestamp` type (which represents UTC).
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/datetime_range.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/datetime_range.proto.dot.svg)
 message DateTimeRange {
   // The inclusive start date and time of the range.
   //

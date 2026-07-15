@@ -10,9 +10,7 @@ import "ttm/types/v4/price.proto";
 
 // Request for countering a cancellation
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v2/counter.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/cancellation/v2/counter.proto.dot.svg)
 message CounterCancellationRequest {
   // Request header
   ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];

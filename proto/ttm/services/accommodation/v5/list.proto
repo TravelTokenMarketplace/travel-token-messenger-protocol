@@ -61,9 +61,7 @@ message AccommodationProductListResponse {
 // property is approved, then it makes sense to get further information with the
 // AccommodationProductInfoService.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/accommodation/v5/list.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/accommodation/v5/list.proto.dot.svg)
 //
 /// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
 service AccommodationProductListService {

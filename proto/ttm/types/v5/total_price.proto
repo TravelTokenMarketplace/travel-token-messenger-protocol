@@ -19,9 +19,7 @@ import "ttm/types/v5/price.proto";
 // - Tourism tax: €20
 // - Service charge: €10
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v5/total_price.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v5/total_price.proto.dot.svg)
 message TotalPrice {
   // The final calculated total price for the product or service
   ttm.types.v5.Price value = 1 [(buf.validate.field).required = true];

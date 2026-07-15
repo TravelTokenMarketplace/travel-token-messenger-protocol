@@ -11,9 +11,7 @@ import "ttm/types/v1/language.proto";
 // This allows for providing textual descriptions about various aspects of
 // an entity (like a product, service, or location) in different languages.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/description.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/description.proto.dot.svg)
 message LocalizedDescriptionSet {
   // The language for which this set of descriptions is provided.
   ttm.types.v1.Language language = 1 [(buf.validate.field).enum = {

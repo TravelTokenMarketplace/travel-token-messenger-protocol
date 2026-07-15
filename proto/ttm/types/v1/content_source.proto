@@ -4,9 +4,7 @@ package ttm.types.v1;
 
 // Content Source Type message type. TODO: Add documentation to explain the purpose of this message
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/content_source.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/content_source.proto.dot.svg)
 enum ContentSourceType {
   CONTENT_SOURCE_TYPE_UNSPECIFIED = 0;
   CONTENT_SOURCE_TYPE_GDS = 1;

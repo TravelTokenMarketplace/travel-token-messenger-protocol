@@ -118,9 +118,7 @@ message Section {
 // and can have an image to be referenced by sections and seats, as well as
 // localized descriptions.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/seat_map.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v4/seat_map.proto.dot.svg)
 message SeatMap {
   // Unique identifier for this entire seat map (e.g., "venueName-standardLayout").
   ttm.types.v4.SeatMapID id = 1 [(buf.validate.field).required = true];

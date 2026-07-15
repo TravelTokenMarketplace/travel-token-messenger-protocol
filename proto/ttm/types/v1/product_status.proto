@@ -6,9 +6,7 @@ package ttm.types.v1;
 //
 // This is being used in responses to specify the status of a product of any message type.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/product_status.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/types/v1/product_status.proto.dot.svg)
 enum ProductStatus {
   PRODUCT_STATUS_UNSPECIFIED = 0;
   PRODUCT_STATUS_NEW = 1;

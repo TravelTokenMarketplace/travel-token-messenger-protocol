@@ -27,9 +27,7 @@ import "ttm/types/v5/service_fact.proto";
 // likely to be needed for initial decision-making whether this property shall
 // be used by the distributor.
 //
-// ![Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/accommodation/v5/property_types.proto.dot.xs.svg)
 //
-// [Open Message Diagram](https://storage.googleapis.com/docs-cmp-files/diagrams/proto/cmp/services/accommodation/v5/property_types.proto.dot.svg)
 message Property {
   // Timestamp of the last modification date of **any** of the property info.
   // This not only includes the fields which are part of this message but rather
