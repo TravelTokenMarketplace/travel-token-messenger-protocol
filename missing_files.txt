@@ -1,3 +1,3 @@
-proto/cmp/services/activity/v2/activity_types.proto
-proto/cmp/services/activity/v2/info.proto
-proto/cmp/services/activity/v2/list.proto
+proto/ttm/services/activity/v2/activity_types.proto
+proto/ttm/services/activity/v2/info.proto
+proto/ttm/services/activity/v2/list.proto
