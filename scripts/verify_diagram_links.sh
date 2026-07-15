@@ -1,33 +1,31 @@
 #!/bin/bash
-
-# verify that all diagram links in the proto files are valid meaning that they
-# follow the expected pattern. If the url is actually reachable is not checked.
-# Also check if the url has the correct path in it based on the proto file path.
-#
-# Run this AFTER scripts/insert_diagram_link.sh has injected the per-branch
-# links (i.e. on the throwaway push checkout), passing the same branch name.
-# Usage: verify_diagram_links.sh <branch>
+# Verify the diagram <details> block was injected into every anchored proto file
+# with the expected per-name .svgz URL. URL reachability is NOT checked.
+# Run AFTER insert_diagram_link.sh, passing the same <name>.
+# Usage: verify_diagram_links.sh <name>
+set -uo pipefail
 ERROR=0
 
-BRANCH="${1:?Usage: verify_diagram_links.sh <branch>}"
-BASEURL="https://traveltokenmarketplace.github.io/travel-token-messenger-protocol/${BRANCH}"
+NAME="${1:?Usage: verify_diagram_links.sh <name>}"
+BASEURL="https://traveltokenmarketplace.github.io/travel-token-messenger-protocol/${NAME}"
 
-for file in $(find proto/ -name "*.proto"); do
-	#echo "Checking file: $file"
-	diagram_link_count=$(grep -Fc "(${BASEURL}/${file}.dot.xs.svg)" "$file")
-	open_diagram_link_count=$(grep -Fc "(${BASEURL}/${file}.dot.svg)" "$file")
+while IFS= read -r file; do
+    # Only files with an anchor (service/message/enum) get a block.
+    grep -qE '^(service|message|enum) ' "$file" || continue
 
-	if [ "$diagram_link_count" -ne 1 ] || [ "$open_diagram_link_count" -ne 1 ]; then
-		echo "❌ Error: File '$file' does not contain the expected diagram links."
-		echo "Found $diagram_link_count diagram link(s) and $open_diagram_link_count open diagram link(s)."
-		ERROR=1
-	fi
-done
+    url="${BASEURL}/${file}.dot.svgz"
+    summary_count=$(grep -Fc "<summary>🗺️ Show Diagram</summary>" "$file")
+    # The linked image "[![alt](url)](url)" references the url twice (src + href).
+    url_count=$(grep -Fo "(${url})" "$file" | wc -l)
+
+    if [ "$summary_count" -ne 1 ] || [ "$url_count" -ne 2 ]; then
+        echo "❌ Error: '$file' missing expected diagram block (summary=$summary_count want 1, url=$url_count want 2)."
+        ERROR=1
+    fi
+done < <(find proto/ -type f -name "*.proto")
 
 if [ "$ERROR" -ne 0 ]; then
-	echo "❌ One or more files have invalid diagram links."
-	exit 1
-else
-	echo "✅ All diagram links are valid."
-	exit 0
+    echo "❌ One or more files have invalid diagram links."
+    exit 1
 fi
+echo "✅ All diagram blocks are valid."
