@@ -9,7 +9,7 @@ directory="proto"
 
 find "$directory" -type f -name "*.proto" | while read -r proto_file; do
     awk -v base="$base" -v path="$proto_file" '
-    !inserted && /^enum|^message/ {
+    !inserted && /^enum|^message|^service/ {
         print "// ![Diagram](" base "/" path ".dot.xs.svg)"
         print "// [Open Message Diagram](" base "/" path ".dot.svg)"
         inserted=1

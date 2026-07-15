@@ -144,10 +144,12 @@ jobs:
             # Install the defined version
             sudo ./scripts/buf-installer.sh --version=${{ env.buf_version}}
           fi
-      - name: Update URLs with branch name
+      - name: Inject per-branch diagram links
         run: |
-          # Add branch name to URLs
-          find proto -type f -name '*.proto' -print0 | xargs -0 -I {} ./scripts/replace_url.sh {} ${{ github.ref_name }}
+          # Inject GitHub Pages diagram links into this throwaway checkout (not committed),
+          # then verify they were injected correctly, before pushing to buf.build.
+          scripts/insert_diagram_link.sh ${{ github.ref_name }}
+          scripts/verify_diagram_links.sh ${{ github.ref_name }}
       - name: Push to buf.build
         uses: bufbuild/buf-push-action@v1
         with:
@@ -188,5 +190,3 @@ jobs:
           publish_dir: ./public
           destination_dir: ${{ github.ref_name }}
           keep_files: true
-      - name: Verify published diagram links
-        run: scripts/verify_diagram_links.sh
