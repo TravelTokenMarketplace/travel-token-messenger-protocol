@@ -5,7 +5,7 @@
 
 PROTODOT="protodot"
 GENERATED_DIR="${1:-gen}"
-PROTO_DIR="${2:-proto/cmp}"
+PROTO_DIR="${2:-proto/ttm}"
 PROTODOT_DIR="${3:-diagrams}"
 
 declare -a BIG_ENUMS=(

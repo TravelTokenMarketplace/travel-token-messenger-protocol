@@ -286,7 +286,7 @@ def check_and_remove_old_versions(service_file_versions):
 
 def record_missing_files(all_proto_files, type_files, service_versions):
 	# Checks the current branch files (all_proto_files) against the c4t branch
-	# If there are files which are in the cmp/types directory this is probably
+	# If there are files which are in the ttm/types directory this is probably
 	# just fine. We just need to check the services whether we still have enough
 	# newer versions which justifies that old ones are removed.
 	# We also need write all the missing files into a separate file for the
@@ -356,7 +356,7 @@ def default_run():
 		for include in includes:
 			if debug:
 				print(f"  ➡️ Processing include: {include}")
-			if include.startswith("cmp/"): # we're only interested in our includes
+			if include.startswith("ttm/"): # we're only interested in our includes
 				if include not in included_by:
 					included_by[include] = [ proto_file ]
 				else:
@@ -375,7 +375,7 @@ def default_run():
 
 		includes = extract_proto_includes(directory_path + proto_file)
 		for include in includes:
-			if include.startswith("cmp/"): # we're only interested in our includes
+			if include.startswith("ttm/"): # we're only interested in our includes
 				if proto_file in latest_proto_files and include not in latest_proto_files:
 					if include in fixed_version_upgrades:
 						# Edge-case scenario where a file was upgraded in a previous iteration
@@ -479,7 +479,7 @@ if fix:
 				search_replace_fixes.append( (wrong_include, correct_include) )
 
 				# Lastly we also need to update the usages of the protobuf message types in the new/existing file
-				# e.g. cmp.types.v1.Message -> cmp.types.v2.Message
+				# e.g. ttm.types.v1.Message -> ttm.types.v2.Message
 				# This is done by replacing the old version number with the new version number when messages from the include is used
 				# So we first need to extract the message names from the include file and then replace the old version number with the new version number
 				# in the search/replace step
