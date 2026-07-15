@@ -44,7 +44,8 @@ message CheckCancellationRequest {
   // Reason provided for the cancellation request.
   // This helps suppliers apply appropriate policies and may affect refund calculations.
   ttm.services.cancellation.v1.CancellationReason reason = 4 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values, including UNSPECIFIED (0) */
+    /* Only allow defined enum values, including UNSPECIFIED (0) */
+    defined_only: true
   }];
 }
 
@@ -83,14 +84,16 @@ message CheckCancellationSuccessResponse {
   // - REJECT: Cancellation is not allowed, see rejection_reason for details
   // - ALREADY_CANCELLED: This booking was previously cancelled
   ttm.services.cancellation.v3.CancellationCheckStatus status = 5 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values */
+    /* Only allow defined enum values */
+    defined_only: true
     not_in: [0] /* Exclude unspecified value */
   }];
 
   // Reason why the cancellation was rejected.
   // Required (can not be UNSPECIFIED (0)) when status is REJECT.
   ttm.services.cancellation.v1.RejectionReason rejection_reason = 6 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values, including UNSPECIFIED (0) */
+    /* Only allow defined enum values, including UNSPECIFIED (0) */
+    defined_only: true
   }];
 
   // When the supplier system performed this cancellation check.

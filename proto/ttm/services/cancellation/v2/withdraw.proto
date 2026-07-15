@@ -18,7 +18,8 @@ message WithdrawCancellationRequest {
 
   // Withdrawal reason
   ttm.services.cancellation.v1.WithdrawalReason reason = 3 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values */
+    /* Only allow defined enum values */
+    defined_only: true
     not_in: [0] /* Exclude unspecified value */
   }];
 }

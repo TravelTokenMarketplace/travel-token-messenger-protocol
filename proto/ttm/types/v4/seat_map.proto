@@ -149,7 +149,8 @@ message SeatInventory {
   repeated string ids = 1 [(buf.validate.field).repeated = {
     min_items: 1 // Must specify at least one seat ID.
     max_items: 10000 // Max seat IDs in one inventory list (e.g., per transaction).
-    unique: true /* Seat IDs in this list must be unique. */
+    /* Seat IDs in this list must be unique. */
+    unique: true
     items: {
       // Validation for each string ID in the list.
       string: {

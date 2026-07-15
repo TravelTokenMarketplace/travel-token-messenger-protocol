@@ -24,36 +24,42 @@ message CountryEntryRequirementsRequest {
 
   // Departure country
   ttm.types.v2.Country departure = 2 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values */
+    /* Only allow defined enum values */
+    defined_only: true
     not_in: [0] /* Exclude unspecified value */
   }];
 
   // Destination country
   ttm.types.v2.Country destination = 3 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values */
+    /* Only allow defined enum values */
+    defined_only: true
     not_in: [0] /* Exclude unspecified value */
   }];
 
   // Citizenship
   ttm.types.v2.Country citizenship = 4 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values */
+    /* Only allow defined enum values */
+    defined_only: true
     not_in: [0] /* Exclude unspecified value */
   }];
 
   // Residence
   ttm.types.v2.Country residence = 5 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values */
+    /* Only allow defined enum values */
+    defined_only: true
     not_in: [0] /* Exclude unspecified value */
   }];
 
   // Transit country
   ttm.types.v2.Country transit = 6 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values, including UNSPECIFIED */
+    /* Only allow defined enum values, including UNSPECIFIED */
+    defined_only: true
   }];
 
   // Travel type, ex: business or tourism
   ttm.types.v1.TravelType travel_type = 7 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values, including UNSPECIFIED */
+    /* Only allow defined enum values, including UNSPECIFIED */
+    defined_only: true
   }];
 
   // Date time range, start and end dates of visit, as timestamp.
@@ -180,7 +186,8 @@ message LocalizedItemInfo {
   string description = 2 [(buf.validate.field).string.max_bytes = 512];
 
   ttm.types.v1.Language language = 3 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values */
+    /* Only allow defined enum values */
+    defined_only: true
     not_in: [0] /* Exclude unspecified value */
   }];
 }

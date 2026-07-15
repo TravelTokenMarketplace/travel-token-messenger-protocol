@@ -22,7 +22,8 @@ message InitiateCancellationRequest {
 
   // The cancellation reason
   ttm.services.cancellation.v1.CancellationReason reason = 4 [(buf.validate.field).enum = {
-    defined_only: true /* Only allow defined enum values, including UNSPECIFIED (0) */
+    /* Only allow defined enum values, including UNSPECIFIED (0) */
+    defined_only: true
   }];
 }
 
