@@ -1,6 +1,6 @@
 #!/bin/bash
 # Verify the diagram <details> block was injected into every anchored proto file
-# with the expected per-name .svgz URL. URL reachability is NOT checked.
+# with the expected per-name .svg URL. URL reachability is NOT checked.
 # Run AFTER insert_diagram_link.sh, passing the same <name>.
 # Usage: verify_diagram_links.sh <name>
 set -uo pipefail
@@ -13,7 +13,7 @@ while IFS= read -r file; do
     # Only files with an anchor (service/message/enum) get a block.
     grep -qE '^(service|message|enum) ' "$file" || continue
 
-    url="${BASEURL}/${file}.dot.svgz"
+    url="${BASEURL}/${file}.dot.svg"
     summary_count=$(grep -Fc "<summary>🗺️ Show Diagram</summary>" "$file")
     # The linked image "[![alt](url)](url)" references the url twice (src + href).
     url_count=$(grep -Fo "(${url})" "$file" | wc -l)

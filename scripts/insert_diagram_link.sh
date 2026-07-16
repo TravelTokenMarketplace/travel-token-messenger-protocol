@@ -20,7 +20,7 @@ find "$directory" -type f -name "*.proto" | while read -r proto_file; do
     !inserted && $0 ~ anchor {
         name=$2
         sub(/\{.*/, "", name)          # strip trailing "{" if attached
-        url=base "/" path ".dot.svgz"
+        url=base "/" path ".dot.svg"
         print "//"
         print "// <details>"
         print "// <summary>🗺️ Show Diagram</summary>"

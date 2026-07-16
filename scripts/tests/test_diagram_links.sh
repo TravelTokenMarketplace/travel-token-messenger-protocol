@@ -44,8 +44,8 @@ EOF
 
 svc="proto/ttm/services/foo/v1/foo.proto"
 typ="proto/ttm/types/bar/v1/bar.proto"
-svc_url="${BASE}/${svc}.dot.svgz"
-typ_url="${BASE}/${typ}.dot.svgz"
+svc_url="${BASE}/${svc}.dot.svg"
+typ_url="${BASE}/${typ}.dot.svg"
 
 # Service file: summary once, anchored ABOVE the service but BELOW the first message.
 summary_line=$(grep -n '<summary>🗺️ Show Diagram</summary>' "$svc" | head -1 | cut -d: -f1)
@@ -58,18 +58,18 @@ else
   bad "svc: anchored on the service (below messages) [summary=$summary_line service=$service_line firstmsg=$firstmsg_line]"
 fi
 grep -Fq '[![FooService Diagram]' "$svc" && pass "svc: alt = service name" || bad "svc: alt = service name"
-[ "$(grep -Fo "($svc_url)" "$svc" | wc -l)" -eq 2 ] && pass "svc: svgz url twice" || bad "svc: svgz url twice"
+[ "$(grep -Fo "($svc_url)" "$svc" | wc -l)" -eq 2 ] && pass "svc: svg url twice" || bad "svc: svg url twice"
 
 # Type file: summary once, alt = message name, url twice.
 [ "$(grep -Fc '<summary>🗺️ Show Diagram</summary>' "$typ")" -eq 1 ] && pass "type: summary once" || bad "type: summary once"
 grep -Fq '[![Bar Diagram]' "$typ" && pass "type: alt = message name" || bad "type: alt = message name"
-[ "$(grep -Fo "($typ_url)" "$typ" | wc -l)" -eq 2 ] && pass "type: svgz url twice" || bad "type: svgz url twice"
+[ "$(grep -Fo "($typ_url)" "$typ" | wc -l)" -eq 2 ] && pass "type: svg url twice" || bad "type: svg url twice"
 
 # Verify passes on the injected tree.
 "$VERIFY" "$NAME" >/dev/null 2>&1 && pass "verify passes on injected tree" || bad "verify passes on injected tree"
 
 # Tamper one url; verify MUST fail.
-sed -i 's/\.dot\.svgz/.dot.svg/' "$typ"
+sed -i 's/\.dot\.svg/.dot.svgz/' "$typ"
 "$VERIFY" "$NAME" >/dev/null 2>&1 && bad "verify should fail on tampered tree" || pass "verify fails on tampered tree"
 
 [ "$fail" -eq 0 ] && { echo "ALL PASS"; exit 0; } || { echo "FAILURES"; exit 1; }
