@@ -253,3 +253,4 @@ jobs:
         run: |
           bash scripts/tests/test_generate_svg.sh
           bash scripts/tests/test_diagram_links.sh
+          bash scripts/tests/test_gh_pages_size_report.sh
