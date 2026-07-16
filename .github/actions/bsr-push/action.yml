@@ -23,4 +23,4 @@ runs:
       shell: bash
       env:
         BUF_TOKEN: ${{ inputs.buf_token }}
-      run: buf push proto --label "${{ inputs.name }}"
+      run: buf push --label "${{ inputs.name }}"
