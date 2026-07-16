@@ -230,3 +230,13 @@ jobs:
         with:
           name: ${{ inputs.use_branch_name && github.ref_name || 'draft' }}
           buf_token: ${{ secrets.BUF_BSR_TOKEN }}
+
+  # Run the diagram-script unit tests (no buf/graphviz needed).
+  script-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run diagram script tests
+        run: |
+          bash scripts/tests/test_generate_svgz.sh
+          bash scripts/tests/test_diagram_links.sh
