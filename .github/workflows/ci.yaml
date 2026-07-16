@@ -29,6 +29,11 @@ on:
       - "scripts/**"
       - "buf.*"
 
+# Least-privilege default; only the *-diagrams jobs that push to gh-pages
+# override with contents: write (see each job below).
+permissions:
+  contents: read
+
 jobs:
   # Run buf's lint to check for errros
   buf-lint:
@@ -145,6 +150,8 @@ jobs:
 
   release-diagrams:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push diagrams to gh-pages
     needs: [buf-lint]
     if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'release' && startsWith(github.ref_name, 'release-') }}
     steps:
@@ -167,6 +174,8 @@ jobs:
 
   main-diagrams:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push diagrams to gh-pages
     needs: [buf-lint]
     if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
@@ -189,6 +198,8 @@ jobs:
 
   dev-diagrams:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push diagrams to gh-pages
     needs: [buf-lint]
     if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
     steps:
@@ -211,6 +222,8 @@ jobs:
 
   preview-diagrams:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # push diagrams to gh-pages
     needs: [buf-lint]
     if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'workflow_dispatch' }}
     steps:
