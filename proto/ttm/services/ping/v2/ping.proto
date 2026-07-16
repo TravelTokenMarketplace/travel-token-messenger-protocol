@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+// ### Ping Message
+package ttm.services.ping.v2;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "ttm/types/v4/common.proto";
+
+// The ping message is designed to test the availability of a provider service and
+// to test the network latency as in the gRPC metadata information the DateTime is
+// stored of each hop.
+message PingRequest {
+  // Common request header used in every request.
+  ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];
+
+  // Optional message payload to echo back in the ping response
+  string message = 2 [(buf.validate.field).string.max_bytes = 512];
+
+  // DateTime of the ping request
+  //
+  // Timestamps may be used for both off-chain and on-chain operations.
+  // For on-chain operations, only seconds are supported, and nanoseconds
+  // will be ignored.
+  google.protobuf.Timestamp timestamp = 3 [(buf.validate.field).required = true];
+}
+
+message PingSuccessResponse {
+  // Standard response metadata for successful operations
+  ttm.types.v4.SuccessResponseHeader header = 1 [(buf.validate.field).required = true];
+
+  // Echo of the message sent in the ping request
+  string message = 2 [(buf.validate.field).string.max_bytes = 512];
+
+  // DateTime of the ping response
+  //
+  // Timestamps may be used for both off-chain and on-chain operations.
+  // For on-chain operations, only seconds are supported, and nanoseconds
+  // will be ignored.
+  google.protobuf.Timestamp timestamp = 3 [(buf.validate.field).required = true];
+}
+
+message PingErrorResponse {
+  // Common error response header used in every error response.
+  ttm.types.v4.ErrorResponseHeader header = 1 [(buf.validate.field).required = true];
+}
+
+message PingResponse {
+  oneof response {
+    option (buf.validate.oneof).required = true; // One must be provided
+    ttm.services.ping.v2.PingSuccessResponse success_response = 1;
+    ttm.services.ping.v2.PingErrorResponse error_response = 2;
+  }
+}
+
+// The Ping Service definition
+//
+/// @custom:ttm-service type:core routing:p2p on-chain:false structure:2
+service PingService {
+  // Ping Method
+  rpc Ping(PingRequest) returns (PingResponse);
+}

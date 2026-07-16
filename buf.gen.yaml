@@ -3,7 +3,7 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: buf.build/chain4travel/camino-messenger-protocol
+      value: buf.build/ttm/messenger-protocol
 plugins:
   - remote: buf.build/protocolbuffers/go
     out: gen/go

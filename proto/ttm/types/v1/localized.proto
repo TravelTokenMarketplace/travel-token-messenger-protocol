@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package ttm.types.v1;
+
+import "ttm/types/v1/language.proto";
+
+// Localized string definition
+//
+message LocalizedString {
+  string text = 1;
+  ttm.types.v1.Language language = 2;
+}

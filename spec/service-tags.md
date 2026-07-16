@@ -1,8 +1,8 @@
-# Camino Messenger Service Tags Specification
+# Travel Token Messenger Service Tags Specification
 
 ## Overview
 
-This specification defines a tagging scheme for Camino Messenger Protocol services
+This specification defines a tagging scheme for Travel Token Messenger Protocol services
 to distinguish between different message routing patterns and service types. The
 tags follow a similar pattern to NatSpec's custom tags but are specifically designed
 for protobuf service definitions.
@@ -12,7 +12,7 @@ for protobuf service definitions.
 The tag follows this format:
 
 ```protobuf
-/// @custom:cmp-service type:{TYPE} routing:{PATTERN} [on-chain:{true|false}] [structure:{VERSION}]
+/// @custom:ttm-service type:{TYPE} routing:{PATTERN} [on-chain:{true|false}] [structure:{VERSION}]
 service ServiceName {
   // service definition
 }
@@ -66,29 +66,29 @@ representing the structure version.
 
 ## Examples
 
-### P2P Product Service (in package cmp.services.accommodation.v2)
+### P2P Product Service (in package ttm.services.accommodation.v2)
 
 ```protobuf
-/// @custom:cmp-service type:product routing:p2p structure:2
+/// @custom:ttm-service type:product routing:p2p structure:2
 service AccommodationSearchService {
   rpc AccommodationSearch(AccommodationSearchRequest) returns (AccommodationSearchResponse);
 }
 ```
 
-### Local Service (in package cmp.services.notification.v1)
+### Local Service (in package ttm.services.notification.v1)
 
 ```protobuf
-/// @custom:cmp-service type:product routing:local on-chain:true structure:1
+/// @custom:ttm-service type:product routing:local on-chain:true structure:1
 service NotificationService {
   rpc TokenBoughtNotification(TokenBought) returns (google.protobuf.Empty);
   rpc TokenExpiredNotification(TokenExpired) returns (google.protobuf.Empty);
 }
 ```
 
-### Core System Service (in package cmp.services.ping.v1)
+### Core System Service (in package ttm.services.ping.v1)
 
 ```protobuf
-/// @custom:cmp-service type:core routing:p2p on-chain:false structure:1
+/// @custom:ttm-service type:core routing:p2p on-chain:false structure:1
 service PingService {
   rpc Ping(PingRequest) returns (PingResponse);
 }
@@ -117,7 +117,7 @@ These tags should be:
 
 Required attributes:
 
-- Every service must have a `@custom:cmp-service` tag
+- Every service must have a `@custom:ttm-service` tag
 - The tag must include both `type` and `routing` attributes
 - `routing` must be one of the defined patterns
 - `type` must be one of the defined types

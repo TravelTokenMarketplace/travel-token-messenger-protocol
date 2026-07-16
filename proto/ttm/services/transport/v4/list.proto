@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package ttm.services.transport.v4;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "ttm/services/transport/v4/trip_types.proto";
+import "ttm/types/v4/common.proto";
+
+message TransportProductListRequest {
+  // Common request header used in every request.
+  ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];
+
+  // Only respond with the products that are modified after this timestamp
+  //
+  // Timestamps may be used for both off-chain and on-chain operations.
+  // For on-chain operations, only seconds are supported, and nanoseconds
+  // will be ignored.
+  google.protobuf.Timestamp modified_after = 2;
+}
+
+message TransportProductListSuccessResponse {
+  // Standard response metadata for successful operations
+  ttm.types.v4.SuccessResponseHeader header = 1 [(buf.validate.field).required = true];
+
+  // Product list: Trips
+  repeated ttm.services.transport.v4.TripBasic trips = 2;
+}
+
+message TransportProductListErrorResponse {
+  // Common error response header used in every error response.
+  ttm.types.v4.ErrorResponseHeader header = 1 [(buf.validate.field).required = true];
+}
+
+message TransportProductListResponse {
+  oneof response {
+    option (buf.validate.oneof).required = true; // One must be provided
+    ttm.services.transport.v4.TransportProductListSuccessResponse success_response = 1;
+    ttm.services.transport.v4.TransportProductListErrorResponse error_response = 2;
+  }
+}
+
+// This service is used to get a product list for transportation.
+//
+/// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
+service TransportProductListService {
+  // Gets an optional `modified_after` date and returns a product list.
+  rpc TransportProductList(TransportProductListRequest) returns (TransportProductListResponse);
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package ttm.types.v1;
+
+// Time Message
+//
+message Time {
+  int32 hours = 1;
+  int32 minutes = 2;
+}

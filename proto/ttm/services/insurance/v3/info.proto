@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package ttm.services.insurance.v3;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "ttm/services/insurance/v3/insurance_types.proto";
+import "ttm/types/v1/language.proto";
+import "ttm/types/v4/common.proto";
+import "ttm/types/v4/product_code.proto";
+
+message InsuranceProductInfoRequest {
+  // Message header
+  ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];
+
+  // Only respond with the products that are new, modified or deactivated after this
+  // timestamp.
+  //
+  // Timestamps may be used for both off-chain and on-chain operations.
+  // For on-chain operations, only seconds are supported, and nanoseconds
+  // will be ignored.
+  google.protobuf.Timestamp modified_after = 2;
+
+  // Languages to be included in the response for descriptions. Null means all
+  // available languages.
+  repeated ttm.types.v1.Language languages = 3 [(buf.validate.field).repeated = {
+    min_items: 0
+    max_items: 100
+  }];
+
+  // Insurance codes
+  repeated ttm.types.v4.SupplierProductCode supplier_codes = 4 [(buf.validate.field).repeated = {
+    min_items: 0
+    max_items: 100
+  }];
+}
+
+message InsuranceProductInfoSuccessResponse {
+  // Message header
+  ttm.types.v4.SuccessResponseHeader header = 1 [(buf.validate.field).required = true];
+
+  // Product list: Insurances
+  repeated ttm.services.insurance.v3.PolicyExtendedInfo insurances = 2 [(buf.validate.field).repeated = {
+    min_items: 0
+    max_items: 100
+  }];
+}
+
+message InsuranceProductInfoErrorResponse {
+  // Common error response header used in every error response.
+  ttm.types.v4.ErrorResponseHeader header = 1 [(buf.validate.field).required = true];
+}
+
+message InsuranceProductInfoResponse {
+  oneof response {
+    option (buf.validate.oneof).required = true; // One must be provided
+    ttm.services.insurance.v3.InsuranceProductInfoSuccessResponse success_response = 1;
+    ttm.services.insurance.v3.InsuranceProductInfoErrorResponse error_response = 2;
+  }
+}
+
+// Insurance product info service definition
+//
+/// @custom:ttm-service type:product routing:p2p on-chain:false structure:2
+service InsuranceProductInfoService {
+  // Returns product info for insurance
+  rpc InsuranceProductInfo(InsuranceProductInfoRequest) returns (InsuranceProductInfoResponse);
+}

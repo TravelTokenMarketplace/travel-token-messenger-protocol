@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package ttm.services.cancellation.v1;
+
+import "google/protobuf/timestamp.proto";
+import "ttm/services/cancellation/v1/reason.proto";
+import "ttm/types/v1/common.proto";
+import "ttm/types/v3/price.proto";
+
+// Service for checking cancellation
+//
+/// @custom:ttm-service type:product routing:p2p on-chain:false
+service CheckCancellationService {
+  rpc CheckCancellation(CheckCancellationRequest) returns (CheckCancellationResponse);
+}
+
+message CheckCancellationRequest {
+  // The request header
+  ttm.types.v1.RequestHeader header = 1;
+
+  // The token id of the booking to be cancelled
+  uint64 token_id = 2;
+
+  // The amount to be refunded
+  ttm.types.v3.Price refund_amount = 3;
+
+  // Cancellation reason
+  ttm.services.cancellation.v1.CancellationReason reason = 4;
+}
+
+message CheckCancellationResponse {
+  // The response header
+  ttm.types.v1.ResponseHeader header = 1;
+
+  // The token id of the booking to be cancelled
+  uint64 token_id = 2;
+
+  // The amount to be refunded
+  ttm.types.v3.Price refund_amount = 3;
+
+  // The policy id applied
+  string policy_id_applied = 4;
+
+  // Status of the cancellation check
+  ttm.services.cancellation.v1.CancellationCheckStatus status = 5;
+
+  // Rejection reason
+  ttm.services.cancellation.v1.RejectionReason rejection_reason = 6;
+
+  // Cancellation check timestamp
+  google.protobuf.Timestamp timestamp = 7;
+}
+
+enum CancellationCheckStatus {
+  CANCELLATION_CHECK_STATUS_UNSPECIFIED = 0;
+  CANCELLATION_CHECK_STATUS_ALREADY_CANCELLED = 1;
+  CANCELLATION_CHECK_STATUS_CONFIRM = 2;
+  CANCELLATION_CHECK_STATUS_REJECT = 3;
+}

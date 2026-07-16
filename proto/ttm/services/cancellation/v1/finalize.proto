@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package ttm.services.cancellation.v1;
+
+import "ttm/types/v1/common.proto";
+import "ttm/types/v3/evm_transaction.proto";
+import "ttm/types/v3/price.proto";
+
+// Request for finalization of a cancellation proposal
+//
+message FinalizeCancellationRequest {
+  // The request header
+  ttm.types.v1.RequestHeader header = 1;
+
+  // Booking token ID this request is for
+  uint64 token_id = 2;
+
+  // The amount to be refunded
+  ttm.types.v3.Price refund_amount = 3;
+}
+
+message FinalizeCancellationResponse {
+  // The response header
+  ttm.types.v1.ResponseHeader header = 1;
+
+  // Transaction ID on-chain for the cancellation proposal finalization. This
+  // transaction proves the finalization of the cancellation proposal on-chain.
+  //
+  // This transaction can be verified on-chain to:
+  // 1. Prove the exact time of finalization of the cancellation proposal
+  // 2. Validate the refund amount
+  // 3. Prevent disputes about the cancellation terms
+  ttm.types.v3.EVMTransactionID transaction_id = 2;
+}

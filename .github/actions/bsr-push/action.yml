@@ -1,0 +1,26 @@
+name: "Push proto to buf.build"
+description: "Inject diagram links then push proto to buf.build under a label."
+inputs:
+  name:
+    description: "BSR label (and diagram-link subdirectory) to publish under."
+    required: true
+  buf_token:
+    description: "buf.build API token."
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install buf
+      shell: bash
+      run: sudo ./scripts/buf-installer.sh
+    - name: Inject and verify diagram links
+      shell: bash
+      run: |
+        # Throwaway checkout; the injected links are NOT committed.
+        scripts/insert_diagram_link.sh "${{ inputs.name }}"
+        scripts/verify_diagram_links.sh "${{ inputs.name }}"
+    - name: Push to buf.build
+      shell: bash
+      env:
+        BUF_TOKEN: ${{ inputs.buf_token }}
+      run: buf push --label "${{ inputs.name }}"

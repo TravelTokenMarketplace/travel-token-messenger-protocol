@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package ttm.services.cancellation.v1;
+
+import "ttm/services/cancellation/v1/reason.proto";
+import "ttm/types/v1/common.proto";
+import "ttm/types/v3/evm_transaction.proto";
+
+// Request for withdrawal of an active cancellation proposal
+//
+message WithdrawCancellationRequest {
+  // Request header
+  ttm.types.v1.RequestHeader header = 1;
+
+  // Booking token ID this request is for
+  uint64 token_id = 2;
+
+  // Withdrawal reason
+  ttm.services.cancellation.v1.WithdrawalReason reason = 3;
+}
+
+// Response for withdrawal of an active cancellation proposal
+message WithdrawCancellationResponse {
+  // Response header
+  ttm.types.v1.ResponseHeader header = 1;
+
+  // Transaction ID on-chain for withdrawing the cancellation proposal.
+  //
+  // This transaction can be verified on-chain to:
+  // 1. Prove the exact time of withdrawal
+  // 2. Validate the accepted refund amount
+  // 3. Prevent disputes about acceptance terms
+  ttm.types.v3.EVMTransactionID transaction_id = 2;
+}

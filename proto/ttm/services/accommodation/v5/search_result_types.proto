@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package ttm.services.accommodation.v5;
+
+import "buf/validate/validate.proto";
+import "ttm/services/accommodation/v5/unit_types.proto";
+import "ttm/types/v4/bookability.proto";
+import "ttm/types/v4/rate.proto";
+import "ttm/types/v5/total_price.proto";
+
+// This type represents a search result and is used in the
+// `AccommodationSearchResponse` message.
+//
+message AccommodationSearchResult {
+  // ID for the search result. This is an increasing number starting at 0 and
+  // increasing by 1 for every search result.
+  //
+  // Must be unique within a response. This is used as identifier for validation in
+  // the next step of the booking.
+  uint32 result_id = 1;
+
+  // Unit for this search result
+  ttm.services.accommodation.v5.Unit unit = 2 [(buf.validate.field).required = true];
+
+  // Represents the complete pricing information for a product or service, including
+  // both the total price value and an optional breakdown of price components.
+  ttm.types.v5.TotalPrice total_price = 3 [(buf.validate.field).required = true];
+
+  // The RateRule specifies whether a search result is non-refundable or not
+  repeated ttm.types.v4.RateRule rate_rules = 4 [(buf.validate.field).repeated = {
+    min_items: 0
+    max_items: 100
+  }];
+
+  // Free text remarks without any functionality. Only for display purposes. Should
+  // be in the requested language.
+  string remarks = 5 [(buf.validate.field).string.max_bytes = 512];
+
+  // Status of the result, whether it is immediately bookable or not
+  ttm.types.v4.Bookability bookability = 6 [(buf.validate.field).required = true];
+}

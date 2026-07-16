@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package ttm.types.v4;
+
+import "buf/validate/validate.proto";
+
+// Rate Rule
+//
+message RateRule {
+  // Rate rule code
+  string code = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_bytes: 512
+  }];
+
+  // RateRuleType is meant for uniformed and standardized display.
+  //
+  // This field should be consistent with cancel policy. For example, if rate rule
+  // type is NON_REFUNDABLE, then cancel policy should not define a refundable
+  // policy.
+  ttm.types.v4.RateRuleType type = 2 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+
+  // Rate description and reference. In case of enrichment additional description of the rate type.
+  // Please omit if covered with the RateRuleType.
+  string description = 3 [(buf.validate.field).string = {
+    min_len: 0
+    max_bytes: 512
+  }];
+}
+
+// Rate Rule Type
+enum RateRuleType {
+  RATE_RULE_TYPE_UNSPECIFIED = 0;
+  RATE_RULE_TYPE_FLEXIBLE = 1;
+  RATE_RULE_TYPE_RESELLABLE = 2;
+  RATE_RULE_TYPE_NON_REFUNDABLE = 3;
+  RATE_RULE_TYPE_SEMI_NON_REFUNDABLE = 4;
+}
+
+// Rate plan message type. Contains `rate_plan` and `rate_plan_description` fields
+// as strings. The enumeration for RatePlanType is meant for consistent and
+// standardized display.
+message RatePlan {
+  // Rate plan code
+  string code = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_bytes: 512
+  }];
+
+  // Rate plan type standardization
+  ttm.types.v4.RatePlanType type = 2 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+
+  // Rate plan description. In case of enrichment additional description of the rate plan.
+  //
+  // Ex: "Package Rate". Please omit if covered with the RatePlanType.
+  string description = 3 [(buf.validate.field).string = {
+    min_len: 0
+    max_bytes: 512
+  }];
+}
+
+// Rate Plan Type
+//
+// The enumeration for RatePlanType is meant for consistent and standardized display.
+enum RatePlanType {
+  RATE_PLAN_TYPE_UNSPECIFIED = 0;
+  RATE_PLAN_TYPE_ASSOCIATION = 1;
+  RATE_PLAN_TYPE_CLUB = 2;
+  RATE_PLAN_TYPE_CONCIERGE = 3;
+  RATE_PLAN_TYPE_CONVENTION = 4;
+  RATE_PLAN_TYPE_CORPORATE = 5;
+  RATE_PLAN_TYPE_DAY_RATE = 6;
+  RATE_PLAN_TYPE_DISTRESSED_INVENTORY = 7;
+  RATE_PLAN_TYPE_FAMILY_PLAN = 8;
+  RATE_PLAN_TYPE_GOVERNMENT = 9;
+  RATE_PLAN_TYPE_MILITARY = 10;
+  RATE_PLAN_TYPE_NEGOTIATED = 11;
+  RATE_PLAN_TYPE_PACKAGE = 12;
+  RATE_PLAN_TYPE_PROMOTIONAL = 13;
+  RATE_PLAN_TYPE_REGULAR = 14;
+  RATE_PLAN_TYPE_RACK = 15;
+  RATE_PLAN_TYPE_SENIOR_CITIZEN = 16;
+  RATE_PLAN_TYPE_TOUR = 17;
+  RATE_PLAN_TYPE_WHOLESALE = 18;
+  RATE_PLAN_TYPE_TRAVEL_INDUSTRY = 19;
+  RATE_PLAN_TYPE_WEEKEND = 20;
+  RATE_PLAN_TYPE_LAST_ROOM_AVAILABLE = 21;
+  RATE_PLAN_TYPE_NON_LAST_ROOM_AVAILABLE = 22;
+  RATE_PLAN_TYPE_CONSORTIA = 23;
+  RATE_PLAN_TYPE_GROUP = 24;
+  RATE_PLAN_TYPE_CONTRACT = 25;
+  RATE_PLAN_TYPE_PROMOTIONAL_PACKAGE = 26;
+  RATE_PLAN_TYPE_PUBLISHED = 27;
+  RATE_PLAN_TYPE_NET = 28;
+  RATE_PLAN_TYPE_MULTI_DAY_PACKAGE = 29;
+  RATE_PLAN_TYPE_WEEKLY = 30;
+  RATE_PLAN_TYPE_MONTHLY = 31;
+  RATE_PLAN_TYPE_STANDARD_REDEMPTION_RATE = 32;
+  RATE_PLAN_TYPE_DISCOUNT_REDEMPTION_RATE = 33;
+  RATE_PLAN_TYPE_CASH_AND_POINTS_REDEMPTION_RATE = 34;
+  RATE_PLAN_TYPE_POINT_UPGRADE_REDEMPTION_RATE = 35;
+  RATE_PLAN_TYPE_CASH_UPGRADE_REDEMPTION_RATE = 36;
+  RATE_PLAN_TYPE_EXTENDED_STAY_RATE = 37;
+}

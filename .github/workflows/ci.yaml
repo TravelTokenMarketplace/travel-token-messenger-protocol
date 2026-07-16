@@ -2,21 +2,30 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      use_branch_name:
+        description: "Push to a BSR label named after the branch instead of 'draft'"
+        type: boolean
+        default: false
+  release:
+    types: [published]
   push:
     # Only run when there are changes under relevant dirs
     paths:
       - "proto/**"
       - ".github/workflows/**"
+      - ".github/actions/**"
       - "scripts/**"
       - "buf.*"
     branches:
-      - c4t
+      - main
       - dev
   pull_request:
     # Only run when there are changes under relevant dirs
     paths:
       - "proto/**"
       - ".github/workflows/**"
+      - ".github/actions/**"
       - "scripts/**"
       - "buf.*"
 
@@ -78,10 +87,14 @@ jobs:
   # This also does more in-depth checks whether there are services or type files
   # which are not needed any more and creates a "missing_files.txt" file needed
   # by other checks to identify justified missing files.
-  # The diff against branch script checks then against the c4t branch if there
+  # The diff against branch script checks then against the main branch if there
   # are any unjustified breaking changes.
   sanity-checks:
     runs-on: ubuntu-latest
+    # TODO(rebrand): re-enable post-merge (origin/main on ttm + BSR baseline exists).
+    # When re-enabling, scope it to PRs + dev/main pushes (design §4.5):
+    #   if: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main')) }}
+    if: false
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
@@ -103,8 +116,6 @@ jobs:
         run: scripts/diff_against_branch.sh
       - name: Buf Breaking Check # Run buf breaking against main label on buf.build
         run: scripts/buf-breaking.sh
-      - name: Verify diagrams
-        run: scripts/verify_diagram_links.sh
 
   # Check if the service tags are set correctly and create a summary for that
   analyze-service-tags:
@@ -124,85 +135,108 @@ jobs:
       - name: Run proto FQPN check
         run: scripts/fqpn_check.sh
 
-  # Push the draft branch to buf.build
-  bsr-push-draft:
+  # ---- Diagram + BSR publish pipeline ----
+  # Gated by repo variable PUBLISH_ENABLED so the pipeline stays dormant until
+  # GitHub Pages is enabled AND the BSR module buf.build/ttm/messenger-protocol
+  # exists. Enable post-merge:  gh variable set PUBLISH_ENABLED --body true
+  # Each push is ordered behind its diagrams job so injected .svgz links are live
+  # before the label moves. Publish path depends on buf-lint only (not
+  # sanity-checks): releases may be intentionally breaking.
+
+  release-diagrams:
     runs-on: ubuntu-latest
-    needs: [buf-lint, sanity-checks]
-    if: ${{ (github.ref == 'refs/heads/draft') || (github.ref == 'refs/heads/dev') }}
-    environment: draft
+    needs: [buf-lint]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'release' && startsWith(github.ref_name, 'release-') }}
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v4
-      - name: Install Buf
-        run: |
-          # Install Buf
-          if [ "${{ env.buf_version }}" == "" ]; then
-            # Install latest version
-            sudo ./scripts/buf-installer.sh
-          else
-            # Install the defined version
-            sudo ./scripts/buf-installer.sh --version=${{ env.buf_version}}
-          fi
-      - name: Update URLs with branch name
-        run: |
-          # Add branch name to URLs
-          find proto -type f -name '*.proto' -print0 | xargs -0 -I {} ./scripts/replace_url.sh {} ${{ github.ref_name }}
-      - name: Push to buf.build
-        uses: bufbuild/buf-push-action@v1
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/generate-diagrams
         with:
-          input: "proto"
-          draft: true
+          name: ${{ github.ref_name }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  release-push:
+    runs-on: ubuntu-latest
+    needs: [buf-lint, release-diagrams]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'release' && startsWith(github.ref_name, 'release-') }}
+    environment: release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/bsr-push
+        with:
+          name: ${{ github.ref_name }}
           buf_token: ${{ secrets.BUF_BSR_TOKEN }}
 
-  # Generate and upload protodot diagrams
-  diagrams:
+  main-diagrams:
     runs-on: ubuntu-latest
-    needs: [buf-lint, sanity-checks]
-    if: ${{ (github.ref == 'refs/heads/draft') || (github.ref == 'refs/heads/dev') || (github.ref == 'refs/heads/c4t') }}
+    needs: [buf-lint]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
-      # Setup environment
-      - name: Checkout the repo
-        uses: actions/checkout@v4
-      - name: Setup Graphviz
-        uses: ts-graphviz/setup-graphviz@v1
-      - name: Install librsvg2-bin
-        run: sudo apt-get install -y librsvg2-bin
-
-      # Generate diagrams
-      - name: Generate Diagrams
-        run: |
-          # Install protodot
-          wget https://github.com/seamia/protodot/raw/master/binaries/protodot-linux-amd64
-          chmod +x protodot-linux-amd64
-          mkdir -v -p gen/bin
-          mv protodot-linux-amd64 gen/bin/protodot
-          export PATH=${PWD}/gen/bin:${PATH}
-
-          # Run generator script
-          bash scripts/generate_protodot.sh
-
-          # Remove .dot files, we do not need them.
-          find gen/diagrams -type f -name "*.dot" -exec rm -f {} +
-
-          # Show generated files
-          tree gen/diagrams
-
-      # Upload diagrams
-      - name: Cloud Authentication
-        id: auth
-        uses: "google-github-actions/auth@v1"
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/generate-diagrams
         with:
-          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
+          name: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  main-push:
+    runs-on: ubuntu-latest
+    needs: [buf-lint, main-diagrams]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    environment: main
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/bsr-push
+        with:
+          name: main
+          buf_token: ${{ secrets.BUF_BSR_TOKEN }}
 
-      - name: Setup Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+  dev-diagrams:
+    runs-on: ubuntu-latest
+    needs: [buf-lint]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/generate-diagrams
+        with:
+          name: dev
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  dev-push:
+    runs-on: ubuntu-latest
+    needs: [buf-lint, dev-diagrams]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/bsr-push
+        with:
+          name: dev
+          buf_token: ${{ secrets.BUF_BSR_TOKEN }}
 
-      - name: Upload Diagrams
+  preview-diagrams:
+    runs-on: ubuntu-latest
+    needs: [buf-lint]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'workflow_dispatch' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/generate-diagrams
+        with:
+          name: ${{ inputs.use_branch_name && github.ref_name || 'draft' }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  preview-push:
+    runs-on: ubuntu-latest
+    needs: [buf-lint, preview-diagrams]
+    if: ${{ vars.PUBLISH_ENABLED == 'true' && github.event_name == 'workflow_dispatch' }}
+    environment: draft
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/bsr-push
+        with:
+          name: ${{ inputs.use_branch_name && github.ref_name || 'draft' }}
+          buf_token: ${{ secrets.BUF_BSR_TOKEN }}
+
+  # Run the diagram-script unit tests (no buf/graphviz needed).
+  script-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run diagram script tests
         run: |
-          # '-J' options is to set Content-Encoding to gzip
-          gsutil -m rsync -J -R -d gen/diagrams gs://docs-cmp-files/diagrams/${{ github.ref_name }}
-
-      - name: Upload Assets
-        run: |
-          # '-J' options is to set Content-Encoding to gzip
-          gsutil -m rsync -J -R -d assets gs://docs-cmp-files/assets/${{ github.ref_name }}
+          bash scripts/tests/test_generate_svgz.sh
+          bash scripts/tests/test_diagram_links.sh

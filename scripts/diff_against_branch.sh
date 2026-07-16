@@ -17,7 +17,7 @@
 ## * Throw an error in case a structural change is detected
 
 declare -a ERROR_FILES
-ORIGIN=${1:-c4t}
+ORIGIN=${1:-main}
 JUSTIFIED_MISSING_FILES=()
 
 # Color definition for bash output

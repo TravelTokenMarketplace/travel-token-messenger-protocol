@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+// ## Travel Token Messenger Protocol Types Package - Common Definitions
+//
+// This file contains commonly used message types for the Travel Token Messenger Protocol
+// (Travel Token Messenger Protocol), forming a foundational part of Travel Token Messenger Protocol message structures.
+//
+// **Understanding Protobuf Default Values:** When parsing Protocol Buffer messages,
+// there's a distinction between a field being absent and a field being present with
+// its default value. For non-message fields (like integers, enums, strings), if a
+// field is not explicitly set when a message is serialized, it will deserialize
+// with a default value (e.g., 0 for integers/enums, empty string for strings).
+//
+// Consequently, for enums within Travel Token Messenger Protocol:
+// - The '0' value is conventionally defined as `*_UNSPECIFIED`.
+// - It's often impossible to distinguish if `*_UNSPECIFIED` (value 0) was
+//   explicitly set or if the field was omitted.
+// - Therefore, `*_UNSPECIFIED` is typically treated as an invalid or not-set state
+//   in application logic, often enforced by validation rules (e.g., `not_in: [0]`).
+// - If an enum field is optional, a value of `0` might imply the field was not
+//   provided. If required, `0` is usually disallowed.
+//
+// This principle also applies to other field types, though validation logic might
+// be more nuanced than a simple "not equal to 0" check.
+//
+// **Order in Repeated Fields:**
+//
+// Protobuf preserves the order of elements within a `repeated` field. This order
+// can be semantically significant. For example, a sequence of travel legs in a trip
+// should be specified in the intended chronological or logical order.
+package ttm.types.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/types/v4/evm_address.proto";
+
+// Header provides common metadata for Travel Token Messenger Protocol messages.
+//
+message Header {
+  // The version of the Travel Token Messenger Protocol bot or component processing/generating the message. This
+  // field is crucial for transparency, version compatibility checks, and
+  // troubleshooting, especially when different components or partners might be
+  // running different versions.
+  //
+  //   - In requests and responses by an external system (e.g., a "partner plugin")
+  //     that may not know the bot's specific version, this field can be sent with a
+  //     default `Version` message (e.g., major:0, minor:0, patch:0).
+  //   - In requests and responses generated or modified by a Travel Token Messenger Protocol bot/component,
+  //     this field **must** be populated with the actual semantic version of that
+  //     bot/component.
+  //
+  // This field is required to ensure version information is always available.
+  ttm.types.v4.Version version = 1 [(buf.validate.field).required = true];
+
+  // Optional. The end-user's wallet address (e.g., an EVM-compatible address) that
+  // can be used for personalization, user identification, or linking activities to
+  // a specific user account on a blockchain-based system.
+  ttm.types.v4.EVMAddress end_user_wallet_address = 2;
+
+  // An optional identifier for external sessions, aiding in tracking and continuity
+  // across sessions.
+  // This is specified by the initiating system (e.g., a partner plugin)
+  // and can be used to identify not only the request/response pair but also
+  // subsequent interactions related to the same business case.
+  // This field if given in the request header needs to be mirrored in the
+  // response header to maintain session context.
+  string external_session_id = 3 [(buf.validate.field).string = {
+    min_len: 0
+    max_bytes: 512
+  }];
+}
+
+// Version represents a semantic version (Major.Minor.Patch).
+message Version {
+  // Major version. Incremented for incompatible API changes.
+  uint32 major = 1;
+
+  // Minor version. Incremented for adding functionality in a backwards-compatible
+  // manner.
+  uint32 minor = 2;
+
+  // Patch version. Incremented for backwards-compatible bug fixes.
+  uint32 patch = 3;
+}
+
+// RequestHeader wraps the common base header and includes response-specific info.
+message RequestHeader {
+  // The base header information common to all Travel Token Messenger Protocol messages.
+  ttm.types.v4.Header base_header = 1 [(buf.validate.field).required = true];
+}
+
+// The SuccessResponseHeader wraps the common base header and includes response-specific info.
+message SuccessResponseHeader {
+  // The base header information common to all Travel Token Messenger Protocol messages.
+  ttm.types.v4.Header base_header = 1 [(buf.validate.field).required = true];
+
+  // A list of alerts providing more detailed information about the response
+  repeated ttm.types.v4.Alert alerts = 2 [(buf.validate.field).repeated = {max_items: 25}];
+}
+
+// The ErrorResponseHeader wraps the common base header and includes reasons for failure.
+message ErrorResponseHeader {
+  // The base header information common to all Travel Token Messenger Protocol messages.
+  ttm.types.v4.Header base_header = 1 [(buf.validate.field).required = true];
+
+  // A list of errors providing more detailed information about the
+  // response failure.
+  repeated ttm.types.v4.Error errors = 2 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 25
+  }];
+}
+
+// Alert provides detailed feedback which can be a warning, or
+// informational message.
+message Alert {
+  ttm.types.v4.AlertCode code = 3 [(buf.validate.field).enum = {
+    /* Ensures only defined enum values are used. */
+    defined_only: true
+    not_in: [0] /* Disallows ALERT_CODE_UNSPECIFIED. */
+  }];
+
+  // The optional human-readable alert message to further specify the alert.
+  string message = 1 [(buf.validate.field).string = {
+    min_len: 0
+    max_bytes: 512 // Constrains message length.
+  }];
+}
+
+enum AlertCode {
+  ALERT_CODE_UNSPECIFIED = 0;
+  // The request was successful but there is no content to return.
+  // This can be due to filters or criteria that resulted in no matching data.
+  ALERT_CODE_NO_CONTENT = 1;
+  ALERT_CODE_DEPRECATED_VERSION = 2; // The version used is deprecated and may not be supported in the future.
+  ALERT_CODE_LANGUAGE_NOT_SUPPORTED = 3; // One or more requested languages are not supported.
+  ALERT_CODE_INFORMATIONAL = 4; // An informational alert that does not indicate an error or warning.
+}
+
+// Errors provides detailed feedback about why a request failed.
+message Error {
+  ttm.types.v4.ErrorCode code = 1 [(buf.validate.field).enum = {
+    /* Ensures only defined enum values are used. */
+    defined_only: true
+    not_in: [0] /* Disallows ERROR_CODE_UNSPECIFIED. */
+  }];
+
+  // An optional human-readable error message to further specify the error.
+  string message = 2 [(buf.validate.field).string = {
+    max_bytes: 512 // Constrains message length.
+  }];
+}
+
+enum ErrorCode {
+  ERROR_CODE_UNSPECIFIED = 0;
+  ERROR_CODE_INVALID_PROTO = 1; // The request did not conform to the expected Protobuf schema and/or validation rules.
+  ERROR_CODE_INVALID_IDENTIFIERS = 2; // The request contained invalid or unrecognized identifiers (e.g. ExpiringUUIDs).
+  ERROR_CODE_INVALID_CURRENCY = 3; // The request contained invalid or unsupported currency codes.
+  ERROR_CODE_UNIMPLEMENTED = 4; // The request contained fields which are not supported (and can't be ignored).
+  ERROR_CODE_UNAUTHORIZED = 5; // The requester is not authorized to perform the operation.
+  ERROR_CODE_INTERNAL = 6; // An internal server error occurred.
+  ERROR_CODE_TEMPORARY_UNAVAILABLE = 7; // The service is temporarily unavailable.
+  ERROR_CODE_RATE_LIMIT_EXCEEDED = 8; // The request exceeded the allowed rate limit.
+  // An error occurred in the context of the overall business process.
+  // This could involve issues like proto-valid field values which are invalid in the context of the process
+  // payment failures, or other domain-specific errors.
+  ERROR_CODE_BUSINESS_PROCESS_ERROR = 9;
+  ERROR_CODE_BLOCKCHAIN_ERROR = 10; // An error occurred while interacting with the blockchain.
+}

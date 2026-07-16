@@ -1,24 +1,20 @@
-# Camino Messenger Protocol
+# Travel Token Messenger Protocol
 
-[![CAMINO NETWORK](https://img.shields.io/badge/CAMINO-NETWORK-b440fc?style=for-the-badge&logoColor=white&labelColor=0085ff)](https://camino.network/) [![Static Badge](https://img.shields.io/badge/BUF-BUILD-72a1ed?style=for-the-badge&logoColor=white&labelColor=0C65EC)](https://buf.build/chain4travel/camino-messenger-protocol/) [![CHAT WITH US](https://img.shields.io/badge/DISCORD-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/channels/949247897688494150/1182680860797960253)
+[![BUF BUILD](https://img.shields.io/badge/BUF-BUILD-72a1ed?style=for-the-badge&logoColor=white&labelColor=0C65EC)](https://buf.build/ttm/messenger-protocol/)
 
 ---
 
 > 🚧 **EARLY DAYS NOTICE** 🚧:
-> ⚠️ Although we released our first productive Message Types version, it is still early days and partners make substantial and frequent contributions to the Camino Message Types. Please be aware that the Camino Messenger Protocol is still undergoing active development. The code, guidelines, and instructions may be subject to change.
+> ⚠️ Although we released our first productive Message Types version, it is still early days and partners make substantial and frequent contributions to the Travel Token Message Types. Please be aware that the Travel Token Messenger Protocol is still undergoing active development. The code, guidelines, and instructions may be subject to change.
 
 ---
 
-The Camino Messenger protocol is created together with Partners from each vertical (flights, hotels, holiday homes, transfers, car rental, cruise,..). The objective is to create a message standard for the Camino Messenger, that is considered simple, efficient, complete, robust and easy to integrate by all partners. And conclusively it will delightfully be implemented and used by partners. As all other Camino Network components, the Camino Messenger Protocol is open source. Free to be used anywhere, but of course targeted to be used with the Camino Messenger.
+The Travel Token Messenger Protocol is created together with Partners from each vertical (flights, hotels, holiday homes, transfers, car rental, cruise, …). The objective is to create a message standard for the Travel Token Messenger that is simple, efficient, complete, robust, and easy to integrate by all partners. The Travel Token Messenger Protocol is open source — free to be used anywhere, but of course targeted to be used with the Travel Token Messenger.
 
-Please do not hesitate to communicate your observations on this documentation like uncertainties, mistakes or missing explanations, so that we can continuously improve this documentation. Every Camino Network Partner (Validator) can also participate in official Message Type reviews to help improve the message format. Reach us through the [Discord](https://discord.com/channels/949247897688494150/1182680860797960253).
+For more information about the concept please visit [the Camino Messenger documentation](https://traveltokenmarketplace.github.io/travel-token-messenger-docs/docs/travel-token-messenger/introduction)
 
-For more information about the concept please visit [the Camino Messenger documentation](https://docs.camino.network/camino-messenger).
+Please do not hesitate to communicate your observations on this documentation — uncertainties, mistakes, or missing explanations — so that we can continuously improve it.
 
 ## License
 
-The Camino Messenger Protocol is licensed under the terms of the [Camino Messenger License](LICENSE.md).
-
-## Data Protection
-
-Please take note of the [Camino Messenger Data Protection Guidelines](DATA_PROTECTION.md).
+The Travel Token Messenger Protocol is licensed under the terms of the [GNU Lesser General Public License v3](LICENSE.md).

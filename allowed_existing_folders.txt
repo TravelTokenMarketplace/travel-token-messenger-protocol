@@ -1,1 +1,1 @@
-proto/cmp/services/activity/v5
+proto/ttm/services/activity/v5

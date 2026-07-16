@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package ttm.types.v2;
+
+import "ttm/types/v1/link.proto";
+import "ttm/types/v1/phone.proto";
+import "ttm/types/v2/address.proto";
+import "ttm/types/v2/email.proto";
+
+// Contact Info for general use.
+//
+message ContactInfo {
+  // Address
+  repeated ttm.types.v2.Address address = 1;
+
+  // Phones
+  repeated ttm.types.v1.Phone phones = 2;
+
+  // Emails
+  repeated ttm.types.v2.Email emails = 3;
+
+  // Websites
+  repeated ttm.types.v1.Link links = 4;
+}

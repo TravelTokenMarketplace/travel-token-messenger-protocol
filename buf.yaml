@@ -1,15 +1,15 @@
 version: v2
 modules:
   - path: proto
-    name: buf.build/chain4travel/camino-messenger-protocol
+    name: buf.build/ttm/messenger-protocol
 lint:
   use:
     - STANDARD
   ignore_only:
     RPC_REQUEST_STANDARD_NAME:
-      - proto/cmp/services/notification/v1/notify.proto
-      - proto/cmp/services/notification/v2/notify.proto
-      - proto/cmp/services/notification/v3/notify.proto
+      - proto/ttm/services/notification/v1/notify.proto
+      - proto/ttm/services/notification/v2/notify.proto
+      - proto/ttm/services/notification/v3/notify.proto
   rpc_allow_google_protobuf_empty_responses: true
 breaking:
   use:

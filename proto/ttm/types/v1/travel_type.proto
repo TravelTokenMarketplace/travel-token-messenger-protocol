@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package ttm.types.v1;
+
+// Travel Type definitions
+//
+enum TravelType {
+  TRAVEL_TYPE_UNSPECIFIED = 0;
+  TRAVEL_TYPE_LEISURE = 1;
+  TRAVEL_TYPE_BUSINESS = 2;
+  TRAVEL_TYPE_CONFERENCE = 3;
+  TRAVEL_TYPE_GROUP = 4;
+}

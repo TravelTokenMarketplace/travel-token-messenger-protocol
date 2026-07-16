@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package ttm.services.insurance.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/services/insurance/v4/search_parameters_types.proto";
+
+// Insurance Search Query
+//
+message InsuranceSearchQuery {
+  // Integer query ID, unique per search request
+  uint32 query_id = 1;
+
+  // Insurance specific search parameters Ex: Specific search parameters like
+  // insured booking, nationality, blockchain, ... etc
+  ttm.services.insurance.v4.InsuranceSearchParameters search_parameters_insurance = 2 [(buf.validate.field).required = true];
+}

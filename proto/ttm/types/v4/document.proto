@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package ttm.types.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/types/v4/date.proto";
+
+// Document type to be used in various messages
+//
+message Document {
+  // Example: Passport number, Driver's license number, etc.
+  // The specific format or validation rules for the number may depend on the
+  // document `type`.
+  string number = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_bytes: 512
+  }];
+
+  // The type of the document being provided.
+  ttm.types.v4.DocumentType type = 2 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+
+  // Optional. The expiration date of the document.
+  //
+  // For many document types, such as passports, visas, driver's licenses,
+  // national ID cards, and permanent resident cards, an expiration date is
+  // an intrinsic and often mandatory piece of information. While this field is
+  // optional at the schema level to accommodate document types that do not
+  // expire (e.g., Redress Number, some forms of Naturalization Certificates),
+  // it **should be provided if the document type inherently has an expiration
+  // date.**
+  //
+  // For active documents used for travel or identification, this date should
+  // typically be in the future.
+  //
+  // **Impact of Omission:** Failing to provide an expiration date for a
+  // document that requires one (e.g., a passport for international travel)
+  // can lead to rejection by authorities, airlines, or other entities
+  // relying on this information for validity checks.
+  //
+  // **Recommendation:** It is strongly advised that application logic enforces
+  // the presence and validity (e.g., not in the distant past if for current use)
+  // of `expiration_date` based on the document `type`. For example, if `type`
+  // is `DOCUMENT_TYPE_PASSPORT`, `expiration_date` should be considered
+  // mandatory by the application.
+  ttm.types.v4.Date expiration_date = 3;
+}
+
+enum DocumentType {
+  DOCUMENT_TYPE_UNSPECIFIED = 0;
+  DOCUMENT_TYPE_VISA = 1;
+  DOCUMENT_TYPE_PASSPORT = 2;
+  DOCUMENT_TYPE_PASSPORT_CARD = 3;
+  DOCUMENT_TYPE_MILITARY_IDENTIFICATION = 4;
+  DOCUMENT_TYPE_DRIVERS_LICENSE = 5;
+  DOCUMENT_TYPE_NATIONAL_IDENTITY_DOCUMENT = 6;
+  DOCUMENT_TYPE_VACCINATION_CERTIFICATE = 7;
+  DOCUMENT_TYPE_ALIEN_REGISTRATION = 8;
+  DOCUMENT_TYPE_INSURANCE_POLICY = 9;
+  DOCUMENT_TYPE_TAX_REGISTRATION_EXEMPTION = 10;
+  DOCUMENT_TYPE_VEHICLE_REGISTRATION_LICENSE = 11;
+  DOCUMENT_TYPE_BORDER_CROSSING_CARD = 12;
+  DOCUMENT_TYPE_REFUGEE_TRAVEL_DOCUMENT = 13;
+  DOCUMENT_TYPE_PILOTS_LICENSE = 14;
+  DOCUMENT_TYPE_PERMANENT_RESIDENT_CARD = 15;
+  DOCUMENT_TYPE_REDRESS_NUMBER = 16;
+  DOCUMENT_TYPE_KNOWN_TRAVELER = 17;
+  DOCUMENT_TYPE_NON_STANDARD = 18;
+  DOCUMENT_TYPE_MERCHANT_MARINER = 19;
+  DOCUMENT_TYPE_AIR_NEXUS_CARD = 20;
+  DOCUMENT_TYPE_CREW_MEMBER_CERTIFICATE = 21;
+  DOCUMENT_TYPE_NATURALIZATION_CERTIFICATE = 22;
+  DOCUMENT_TYPE_CPF = 23;
+  DOCUMENT_TYPE_CEDULA = 24;
+}

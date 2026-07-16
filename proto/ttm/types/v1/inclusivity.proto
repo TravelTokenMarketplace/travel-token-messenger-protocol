@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package ttm.types.v1;
+
+// An Option to specify if an item is included or not included in the context
+//
+enum Inclusivity {
+  INCLUSIVITY_UNSPECIFIED = 0;
+  INCLUSIVITY_INCLUDED = 1;
+  INCLUSIVITY_NOT_INCLUDED = 2;
+}

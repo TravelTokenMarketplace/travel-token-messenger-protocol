@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package ttm.types.v1;
+
+// Sorting type and order
+//
+// This is being used in requests to specify the sorting required in the response.
+//
+message Sorting {
+  ttm.types.v1.SortingType sorting_type = 1;
+  ttm.types.v1.SortingOrder sorting_order = 2;
+}
+
+// Sorting type
+enum SortingType {
+  SORTING_TYPE_UNSPECIFIED = 0;
+  SORTING_TYPE_PRICE = 1;
+  SORTING_TYPE_POPULARITY = 2;
+  SORTING_TYPE_DISTANCE = 3;
+  SORTING_TYPE_RATING = 4;
+  SORTING_TYPE_EMISSION = 5;
+}
+
+// Sorting order
+enum SortingOrder {
+  SORTING_ORDER_UNSPECIFIED = 0;
+  SORTING_ORDER_ASCENDING = 1;
+  SORTING_ORDER_DESCENDING = 2;
+}

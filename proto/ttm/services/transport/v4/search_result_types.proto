@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package ttm.services.transport.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/services/transport/v4/trip_types.proto";
+import "ttm/types/v4/bookability.proto";
+import "ttm/types/v4/rate.proto";
+import "ttm/types/v4/total_price.proto";
+
+// Transport search result
+//
+message TransportSearchResult {
+  // Unique result ID
+  uint32 result_id = 1;
+
+  // Query ID is the id of the query this result is generated for
+  uint32 query_id = 2;
+
+  // Offer ID.
+  //
+  // Option to carry through an offer identifier for other stateful provider systems
+  // like NDC AirShopping RS
+  string offer_id = 3 [(buf.validate.field).string.max_bytes = 512];
+
+  // Travellers
+  repeated uint32 traveller_ids = 4 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 100
+  }];
+
+  // Travelling trip. A travelling trip can be repeated and will be in many cases 2
+  // trips: an outbound and returning trip from and to the same destination.
+  // However, it is very much possible to specify your trip around the world into
+  // several "Trips". For example AMS-NYC and after a couple of days NYC-IAH. There
+  // we rent a car and do a road trip to San Fransisco and we take a flight from SFO
+  // to SYD, where afer a couple of days we move on to Indonesia, Thailand, Japan,
+  // Türkiye and back to Amsterdam again.
+  repeated ttm.services.transport.v4.TripExtended travelling_trips = 5 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 100
+  }];
+
+  // Represents the complete pricing information for a product or service, including
+  // both the total price value and an optional breakdown of price components.
+  ttm.types.v4.TotalPrice total_price = 6 [(buf.validate.field).required = true];
+
+  // Rate Rules
+  repeated ttm.types.v4.RateRule rate_rules = 7 [(buf.validate.field).repeated = {
+    min_items: 0
+    max_items: 100
+  }];
+
+  // Status of the result, whether it is immediately bookable or not
+  ttm.types.v4.Bookability bookability = 8 [(buf.validate.field).required = true];
+}

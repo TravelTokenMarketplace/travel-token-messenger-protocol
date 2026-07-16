@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package ttm.services.cancellation.v1;
+
+import "ttm/services/cancellation/v1/reason.proto";
+import "ttm/types/v1/common.proto";
+import "ttm/types/v3/evm_transaction.proto";
+
+// Request for cancellation rejection
+//
+message RejectCancellationRequest {
+  // Request Header
+  ttm.types.v1.RequestHeader header = 1;
+
+  // Booking token ID this request is for
+  uint64 token_id = 2;
+
+  // Reason for rejection
+  ttm.services.cancellation.v1.RejectionReason reason = 3;
+}
+
+// Response for cancellation rejection
+message RejectCancellationResponse {
+  // Response Header
+  ttm.types.v1.ResponseHeader header = 1;
+
+  // Transaction ID on-chain for the cancellation proposal rejection.
+  //
+  // This transaction can be verified on-chain to:
+  // 1. Prove the exact time of the rejection
+  // 2. Validate the rejection reason
+  // 3. Prevent disputes about the cancellation
+  ttm.types.v3.EVMTransactionID transaction_id = 2;
+}

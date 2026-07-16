@@ -1,6 +1,6 @@
 # Generation Settings
 GENERATED_DIR = gen
-MODULLE_DIR = proto/cmp
+MODULLE_DIR = proto/ttm
 PROTOC = protoc
 
 # Protodot diagrams
@@ -28,7 +28,7 @@ clean:
 	rm -rfv ${GENERATED_DIR}/*
 
 sabledocs:
-	protoc proto/cmp/*/*.proto -o descriptor.pb --include_source_info
+	protoc proto/ttm/*/*.proto -o descriptor.pb --include_source_info
 	sabledocs
 	mv sabledocs_output ${GENERATED_DIR}/
 	rm -fv descriptor.pb

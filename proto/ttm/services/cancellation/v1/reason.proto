@@ -1,0 +1,231 @@
+syntax = "proto3";
+
+package ttm.services.cancellation.v1;
+
+// Cancellation Reasons
+//
+enum CancellationReason {
+  // Default unspecified value
+  CANCELLATION_REASON_UNSPECIFIED = 0;
+
+  // Guest-Initiated: Change in Travel Plans
+  CANCELLATION_REASON_SCHEDULE_CONFLICT = 1;
+  CANCELLATION_REASON_WORK_RELATED = 2;
+  CANCELLATION_REASON_FAMILY_EMERGENCY = 3;
+  CANCELLATION_REASON_VISA_PASSPORT_ISSUE = 4;
+  CANCELLATION_REASON_TRANSPORTATION_ISSUE = 5;
+  CANCELLATION_REASON_WEATHER_CONCERN = 6;
+
+  // Guest-Initiated: Financial Reasons
+  CANCELLATION_REASON_FOUND_BETTER_RATE = 7;
+  CANCELLATION_REASON_BUDGET_CONSTRAINT = 8;
+  CANCELLATION_REASON_CURRENCY_FLUCTUATION = 9;
+  CANCELLATION_REASON_UNEXPECTED_EXPENSE = 10;
+  CANCELLATION_REASON_PAYMENT_ISSUE = 11;
+
+  // Guest-Initiated: Personal Preferences
+  CANCELLATION_REASON_CHANGED_DESTINATION = 12;
+  CANCELLATION_REASON_FOUND_BETTER_ACCOMMODATION = 13;
+  CANCELLATION_REASON_GROUP_SIZE_CHANGE = 14;
+  CANCELLATION_REASON_LENGTH_OF_STAY_CHANGE = 15;
+  CANCELLATION_REASON_AMENITY_REQUIREMENT_CHANGE = 16;
+
+  // Guest-Initiated: Health & Safety
+  CANCELLATION_REASON_ILLNESS_OR_INJURY = 17;
+  CANCELLATION_REASON_TRAVEL_ADVISORY = 18;
+  CANCELLATION_REASON_HEALTH_RESTRICTION = 19;
+  CANCELLATION_REASON_DESTINATION_SAFETY_CONCERN = 20;
+  CANCELLATION_REASON_COVID_RELATED = 21;
+
+  // Host/Property-Initiated: Property Issues
+  CANCELLATION_REASON_MAINTENANCE_PROBLEM = 22;
+  CANCELLATION_REASON_OVERBOOKING = 23;
+  CANCELLATION_REASON_PROPERTY_DAMAGE = 24;
+  CANCELLATION_REASON_RENOVATION_WORK = 25;
+  CANCELLATION_REASON_TECHNICAL_SYSTEM_FAILURE = 26;
+
+  // Host/Property-Initiated: Operational Issues
+  CANCELLATION_REASON_STAFFING_PROBLEM = 27;
+  CANCELLATION_REASON_TEMPORARY_CLOSURE = 28;
+  CANCELLATION_REASON_LICENSE_PERMIT_ISSUE = 29;
+  CANCELLATION_REASON_OWNERSHIP_CHANGE = 30;
+  CANCELLATION_REASON_BOOKING_SYSTEM_ERROR = 31;
+
+  // Host/Property-Initiated: Policy Violations
+  CANCELLATION_REASON_INVALID_CREDIT_CARD = 32;
+  CANCELLATION_REASON_SUSPICIOUS_ACTIVITY = 33;
+  CANCELLATION_REASON_HOUSE_RULE_VIOLATION = 34;
+  CANCELLATION_REASON_INCOMPLETE_GUEST_INFO = 35;
+  CANCELLATION_REASON_FAILED_VERIFICATION = 36;
+
+  // System-Related: Technical Issues
+  CANCELLATION_REASON_DOUBLE_BOOKING = 37;
+  CANCELLATION_REASON_SYSTEM_GLITCH = 38;
+  CANCELLATION_REASON_PAYMENT_PROCESSING_ERROR = 39;
+  CANCELLATION_REASON_CALENDAR_SYNC_ERROR = 40;
+  CANCELLATION_REASON_RATE_PLAN_ERROR = 41;
+
+  // System-Related: Administrative Reasons
+  CANCELLATION_REASON_PROPERTY_DELISTING = 42;
+  CANCELLATION_REASON_CONTRACT_TERMINATION = 43;
+  CANCELLATION_REASON_ACCOUNT_SUSPENSION = 44;
+  CANCELLATION_REASON_REGULATORY_COMPLIANCE = 45;
+  CANCELLATION_REASON_PLATFORM_POLICY_VIOLATION = 46;
+
+  // Force Majeure: Natural Disasters
+  CANCELLATION_REASON_EARTHQUAKE = 47;
+  CANCELLATION_REASON_FLOOD = 48;
+  CANCELLATION_REASON_HURRICANE = 49;
+  CANCELLATION_REASON_VOLCANIC_ACTIVITY = 50;
+  CANCELLATION_REASON_SEVERE_WEATHER = 51;
+
+  // Force Majeure: External Factors
+  CANCELLATION_REASON_CIVIL_UNREST = 52;
+  CANCELLATION_REASON_POLITICAL_INSTABILITY = 53;
+  CANCELLATION_REASON_STRIKE_ACTION = 54;
+  CANCELLATION_REASON_PUBLIC_HEALTH_EMERGENCY = 55;
+  CANCELLATION_REASON_GOVERNMENT_RESTRICTION = 56;
+}
+
+enum RejectionReason {
+  REJECTION_REASON_UNSPECIFIED = 0;
+  REJECTION_REASON_TECHNICAL_ERROR = 1;
+  REJECTION_REASON_INVALID_SERVICE_OR_BOOKING_REFERENCE = 2;
+  REJECTION_REASON_BOOKING_IS_ALREADY_CANCELLED = 3;
+  REJECTION_REASON_SERVICE_HAS_STARTED_OR_HAS_BEEN_DELIVERED = 4;
+  REJECTION_REASON_CANCELLATION_WINDOW_EXPIRED = 5;
+  REJECTION_REASON_SERVICE_CANNOT_BE_CANCELLED_ONLINE = 6;
+  REJECTION_REASON_RATE_OR_FARE_CANNOT_BE_CANCELLED = 7;
+  // Service forms part of a package, the entire package must be cancelled
+  REJECTION_REASON_ENTIRE_PACKAGE_MUST_BE_CANCELLED = 8;
+  REJECTION_REASON_REFUND_CURRENCY_NOT_SUPPORTED = 9;
+
+  // AUTOMATIC REJECTION REASON DURING TRANSFER OF THE TOKEN ON-CHAIN
+  REJECTION_REASON_TRANSFER_ON_CHAIN = 99;
+}
+
+enum CounterReason {
+  COUNTER_REASON_UNSPECIFIED = 0;
+
+  // Market Conditions
+
+  // High demand during peak travel seasons justifying stricter refund policies
+  COUNTER_REASON_PEAK_SEASON_DEMAND = 1;
+  // Property is running at high occupancy rate, limiting rebooking flexibility
+  COUNTER_REASON_HIGH_OCCUPANCY_PERIOD = 2;
+  // Booking coincides with local events/festivals affecting demand
+  COUNTER_REASON_SPECIAL_EVENT_PERIOD = 3;
+  // Few remaining units/rooms available for the period
+  COUNTER_REASON_LIMITED_AVAILABILITY = 4;
+
+  // Booking Value
+
+  // Booking was made at premium/rack rates affecting refund calculation
+  COUNTER_REASON_PREMIUM_RATE_BOOKING = 5;
+  // Extended stay discounts were applied to the original booking
+  COUNTER_REASON_LONG_STAY_DISCOUNT_APPLIED = 6;
+  // Booking is part of a package with specific cancellation terms
+  COUNTER_REASON_PACKAGE_DEAL_TERMS = 7;
+  // Special promotional rates were applied with specific conditions
+  COUNTER_REASON_PROMOTIONAL_RATE_TERMS = 8;
+
+  // Business Impact
+
+  // Limited time remaining to resell the inventory
+  COUNTER_REASON_RESELL_OPPORTUNITY_LIMITED = 9;
+  // Resources already allocated (staff, equipment, services)
+  COUNTER_REASON_RESOURCE_ALLOCATION_COST = 10;
+  // Operational costs already incurred in preparation
+  COUNTER_REASON_OPERATIONAL_EXPENSES_INCURRED = 11;
+  // Commitments made to external service providers
+  COUNTER_REASON_THIRD_PARTY_COMMITMENTS = 12;
+
+  // Policy Based
+
+  // Different refund tiers based on time until check-in
+  COUNTER_REASON_CANCELLATION_WINDOW_TIER = 13;
+  // Specific terms in booking contract affecting refund
+  COUNTER_REASON_BOOKING_TERMS_REQUIREMENT = 14;
+  // Rate plan has specific cancellation/refund rules
+  COUNTER_REASON_RATE_PLAN_RESTRICTION = 15;
+  // Seasonal policies affecting refund calculations
+  COUNTER_REASON_SEASONAL_POLICY_APPLIED = 16;
+
+  // Relationship Management
+
+  // Customer's previous booking/cancellation history considered
+  COUNTER_REASON_CUSTOMER_HISTORY_CONSIDERATION = 17;
+  // Loyalty program status and benefits affecting refund
+  COUNTER_REASON_LOYALTY_PROGRAM_TERMS = 18;
+  // Corporate rate agreement terms affecting cancellation
+  COUNTER_REASON_CORPORATE_AGREEMENT_TERMS = 19;
+  // Distribution partner contract terms affecting refund
+  COUNTER_REASON_PARTNER_CONTRACT_TERMS = 20;
+
+  // Calculation Disputes
+
+  // Initial calculation missed applicable fees or charges
+  COUNTER_REASON_MISSING_FEES = 21;
+  // Incorrect tax calculation or tax exemption status
+  COUNTER_REASON_TAX_CALCULATION_ERROR = 22;
+  // Currency conversion or exchange rate miscalculation
+  COUNTER_REASON_CURRENCY_CALCULATION_ERROR = 23;
+  // Incorrect cancellation penalty timing or tier applied
+  COUNTER_REASON_PENALTY_CALCULATION_ERROR = 24;
+  // Promotional discounts or credits not properly accounted
+  COUNTER_REASON_DISCOUNT_CALCULATION_ERROR = 25;
+}
+
+enum WithdrawalReason {
+  WITHDRAWAL_REASON_UNSPECIFIED = 0;
+
+  // Change of Circumstances
+
+  // Issue resolved through direct communication
+  WITHDRAWAL_REASON_RESOLVED_WITH_SUPPLIER = 1;
+  // The original reason for cancellation no longer exists
+  WITHDRAWAL_REASON_ORIGINAL_ISSUE_RESOLVED = 2;
+  // Found another solution without cancelling
+  WITHDRAWAL_REASON_ALTERNATIVE_SOLUTION_FOUND = 3;
+  // Modified travel plans to accommodate booking
+  WITHDRAWAL_REASON_TRAVEL_PLANS_READJUSTED = 4;
+
+  // Financial Reasons
+
+  // Found money to continue with booking
+  WITHDRAWAL_REASON_FUNDS_SECURED = 5;
+  // Found a better way to handle the refund
+  WITHDRAWAL_REASON_BETTER_REFUND_OPTION_FOUND = 6;
+  // Original payment problems resolved
+  WITHDRAWAL_REASON_PAYMENT_ISSUE_RESOLVED = 7;
+
+  // Process Related
+
+  // Accidental submission
+  WITHDRAWAL_REASON_SUBMITTED_BY_MISTAKE = 8;
+  // Wrong booking selected for cancellation
+  WITHDRAWAL_REASON_INCORRECT_BOOKING_SELECTED = 9;
+  // Already requested through another channel
+  WITHDRAWAL_REASON_DUPLICATE_REQUEST = 10;
+
+  // Administrative
+
+  // Waiting for supplier response on different matter
+  WITHDRAWAL_REASON_PENDING_SUPPLIER_RESPONSE = 11;
+  // Situation under review by customer service
+  WITHDRAWAL_REASON_UNDER_REVIEW = 12;
+  // Need to gather more documentation first
+  WITHDRAWAL_REASON_AWAITING_DOCUMENTATION = 13;
+
+  // Reconsidered
+
+  // After seeing cancellation fee, decided to keep booking
+  WITHDRAWAL_REASON_FEE_TOO_HIGH = 14;
+  // Decided to try reselling/transferring instead
+  WITHDRAWAL_REASON_BETTER_TO_RESELL = 15;
+  // Simply changed mind about cancelling
+  WITHDRAWAL_REASON_CHANGED_MIND = 16;
+
+  // AUTOMATIC WITHDRAWAL REASON DURING TRANSFER OF THE TOKEN ON-CHAIN
+  WITHDRAWAL_REASON_TRANSFER_ON_CHAIN = 99;
+}

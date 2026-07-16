@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package ttm.types.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/types/v4/credit_card.proto";
+
+// Additional payment info message with currently only a single field of
+// `CreditCard` message type.
+//
+message AdditionalPaymentInfo {
+  ttm.types.v4.CreditCard credit_card = 1 [(buf.validate.field).required = true];
+}
+
+// Payment Types
+enum PaymentType {
+  PAYMENT_TYPE_UNSPECIFIED = 0;
+  PAYMENT_TYPE_BANK_TRANSFER = 1;
+  PAYMENT_TYPE_CREDIT_CARD = 2;
+  PAYMENT_TYPE_PAYPAL = 3;
+  PAYMENT_TYPE_CRYPTO_CARD = 4;
+}
+
+message OffChainPayment {
+  // Payment ID
+  string payment_id = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_bytes: 512
+  }];
+
+  // Payment Type. It can be Bank transfer, Credit card, ... etc
+  ttm.types.v4.PaymentType payment_type = 2 [(buf.validate.field).enum = {defined_only: true}];
+
+  string description = 3 [(buf.validate.field).string = {
+    min_len: 0
+    max_bytes: 512
+  }];
+
+  option (buf.validate.message).cel = {
+    id: "payment_type_unspecified_requires_description"
+    message: "Description must not be empty when payment type is UNSPECIFIED"
+    expression: "this.payment_type != ttm.types.v4.PaymentType.PAYMENT_TYPE_UNSPECIFIED || size(this.description) > 0"
+  };
+}

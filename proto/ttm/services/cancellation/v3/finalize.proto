@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package ttm.services.cancellation.v3;
+
+import "buf/validate/validate.proto";
+import "ttm/types/v4/common.proto";
+import "ttm/types/v4/evm_transaction.proto";
+import "ttm/types/v5/price.proto";
+
+// Request for finalization of a cancellation proposal
+//
+message FinalizeCancellationRequest {
+  // The request header
+  ttm.types.v4.RequestHeader header = 1 [(buf.validate.field).required = true];
+
+  // Booking token ID this request is for
+  uint64 token_id = 2;
+
+  // The amount to be refunded
+  ttm.types.v5.Price refund_amount = 3 [(buf.validate.field).required = true];
+}
+
+message FinalizeCancellationSuccessResponse {
+  // The response header
+  ttm.types.v4.SuccessResponseHeader header = 1 [(buf.validate.field).required = true];
+
+  // Transaction ID on-chain for the cancellation proposal finalization. This
+  // transaction proves the finalization of the cancellation proposal on-chain.
+  //
+  // This transaction can be verified on-chain to:
+  // 1. Prove the exact time of finalization of the cancellation proposal
+  // 2. Validate the refund amount
+  // 3. Prevent disputes about the cancellation terms
+  ttm.types.v4.EVMTransactionID transaction_id = 2 [(buf.validate.field).required = true];
+}
+
+message FinalizeCancellationErrorResponse {
+  // Common error response header used in every error response.
+  ttm.types.v4.ErrorResponseHeader header = 1 [(buf.validate.field).required = true];
+}
+
+message FinalizeCancellationResponse {
+  oneof response {
+    option (buf.validate.oneof).required = true; // One must be provided
+    ttm.services.cancellation.v3.FinalizeCancellationSuccessResponse success_response = 1;
+    ttm.services.cancellation.v3.FinalizeCancellationErrorResponse error_response = 2;
+  }
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package ttm.types.v4;
+
+// Redemption Methods
+//
+enum RedemptionMethod {
+  REDEMPTION_METHOD_UNSPECIFIED = 0;
+  REDEMPTION_METHOD_DIGITAL = 1;
+  REDEMPTION_METHOD_PRINT = 2;
+  REDEMPTION_METHOD_MANIFEST = 3;
+}

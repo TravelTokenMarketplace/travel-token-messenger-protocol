@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package ttm.types.v1;
+
+// Content Source Type message type. TODO: Add documentation to explain the purpose of this message
+//
+enum ContentSourceType {
+  CONTENT_SOURCE_TYPE_UNSPECIFIED = 0;
+  CONTENT_SOURCE_TYPE_GDS = 1;
+  CONTENT_SOURCE_TYPE_NDC = 2;
+  CONTENT_SOURCE_TYPE_OWN_PRODUCT = 3;
+  CONTENT_SOURCE_TYPE_DIRECT_CONTRACT = 4;
+  CONTENT_SOURCE_TYPE_3RD_PARTY = 5;
+}

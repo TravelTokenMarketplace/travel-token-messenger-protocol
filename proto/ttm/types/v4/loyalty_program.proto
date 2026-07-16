@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package ttm.types.v4;
+
+import "buf/validate/validate.proto";
+import "ttm/types/v4/evm_address.proto";
+
+// Loyalty Program
+//
+message LoyaltyProgram {
+  // In case of an off-chain loyalty program, this is the id of the loyalty program in loyalty system
+  oneof loyalty_id {
+    option (buf.validate.oneof).required = true;
+
+    // Smart Contract address of a loyalty program
+    ttm.types.v4.EVMAddress contract_address = 1;
+
+    // Off-chain loyalty program identifier
+    string off_chain_loyalty = 2 [(buf.validate.field).string = {
+      min_len: 1
+      max_bytes: 512
+    }];
+  }
+
+  // The individual membership ID inside of the loyalty program
+  string membership_id = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_bytes: 512
+  }];
+}
