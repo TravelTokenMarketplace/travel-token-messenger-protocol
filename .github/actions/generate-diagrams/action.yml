@@ -60,5 +60,15 @@ runs:
           echo "SIZES.md unchanged; nothing to commit."
         else
           git commit -m "chore(pages): update SIZES.md [skip ci]"
-          git push origin gh-pages
+          # peaceiris already pushed to gh-pages earlier in this run, and another
+          # publish run may push between our checkout and now. Rebase + retry so a
+          # concurrent push doesn't fail the job on a non-fast-forward.
+          pushed=false
+          for attempt in 1 2 3; do
+            if git push origin gh-pages; then pushed=true; break; fi
+            echo "push rejected (attempt ${attempt}); rebasing on origin/gh-pages"
+            git fetch origin gh-pages
+            git rebase origin/gh-pages
+          done
+          [ "$pushed" = true ] || { echo "::error::could not push SIZES.md after 3 attempts"; exit 1; }
         fi
