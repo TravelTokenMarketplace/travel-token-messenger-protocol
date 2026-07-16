@@ -251,5 +251,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run diagram script tests
         run: |
-          bash scripts/tests/test_generate_svgz.sh
+          bash scripts/tests/test_generate_svg.sh
           bash scripts/tests/test_diagram_links.sh
