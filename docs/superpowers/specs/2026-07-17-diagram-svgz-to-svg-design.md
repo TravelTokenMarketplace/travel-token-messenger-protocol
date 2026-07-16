@@ -94,6 +94,33 @@ One-time ops:
   true` (required — it preserves other labels' subtrees), so the canary's
   `dev/**/*.svgz` would otherwise linger as orphans.
 
+## Size observability (gh-pages 1 GB limit)
+
+Serving plain `.svg` grows the `gh-pages` branch relative to `.svgz`, and GitHub
+Pages caps a **published site at 1 GB**. Growth is driven almost entirely by
+`release-N` folders: `dev`/`main`/`draft` publish to a fixed folder name and are
+overwritten in place, but each `release-N` keeps its own folder forever
+(`keep_files: true`). We add a size report so the trend is visible well before the
+limit.
+
+- **`scripts/gh_pages_size_report.sh <gh-pages-dir> [--sizes-md <path>]`**: sums file
+  sizes per top-level folder (each label + a `(root)` bucket for `index.html` /
+  `.nojekyll` / `SIZES.md`) and a grand total. Prints a markdown table (folder |
+  size | % of 1 GB, sorted desc, total row) to stdout. With `--sizes-md`, also
+  writes that table to the given path. Emits a GitHub `::warning::` line (never
+  fails) when the total exceeds **80 %** of the limit. Limit constant = **1 000 000
+  000 bytes** (decimal GB, matching GitHub's wording — the conservative reading,
+  warns slightly earlier than GiB would).
+- **`.github/actions/generate-diagrams`**: after the label is published, check out
+  `gh-pages`, run the report against that checkout (`tee` the table into
+  `$GITHUB_STEP_SUMMARY`), write `SIZES.md` at the gh-pages **root**, and commit +
+  push it back (uses the already-granted `contents: write`). `SIZES.md` is thus
+  browsable at the site root and diffable over time. Its own size is negligible and
+  counts toward the next run's total (correctly — it is on the site).
+- **Test:** `scripts/tests/test_gh_pages_size_report.sh` against a fixture directory
+  (asserts per-folder + total math, table shape, and the 80 % warning boundary);
+  wired into the `script-tests` job.
+
 ## Verification
 
 1. **Wire/serving:** `curl -H 'Accept-Encoding: gzip'` a newly published `.svg` →
@@ -103,6 +130,8 @@ One-time ops:
    injected diagram) and confirm the diagram renders inline.
 3. **SVGO safety:** spot-check a link-bearing diagram (a `service` proto) renders
    with links/text intact after `--multipass`.
+4. **Size report:** confirm the `dev` publish run shows the per-folder table in its
+   Actions step summary and that `SIZES.md` appears at the gh-pages root.
 
 ## Rollout (resumes the paused sequence)
 
