@@ -10,6 +10,10 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup Node (for SVGO)
+      uses: actions/setup-node@v4
+      with:
+        node-version: "22"
     - name: Setup Graphviz
       uses: ts-graphviz/setup-graphviz@v1
     - name: Generate diagrams
@@ -35,3 +39,26 @@ runs:
         publish_dir: ./public
         destination_dir: ${{ inputs.name }}
         keep_files: true
+    - name: Checkout gh-pages
+      uses: actions/checkout@v4
+      with:
+        ref: gh-pages
+        path: _ghpages
+    - name: Size report + SIZES.md
+      shell: bash
+      run: |
+        bash scripts/gh_pages_size_report.sh _ghpages --sizes-md _ghpages/SIZES.md \
+          | tee -a "$GITHUB_STEP_SUMMARY"
+    - name: Commit SIZES.md
+      shell: bash
+      working-directory: _ghpages
+      run: |
+        git config user.name  "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add SIZES.md
+        if git diff --cached --quiet; then
+          echo "SIZES.md unchanged; nothing to commit."
+        else
+          git commit -m "chore(pages): update SIZES.md [skip ci]"
+          git push origin gh-pages
+        fi

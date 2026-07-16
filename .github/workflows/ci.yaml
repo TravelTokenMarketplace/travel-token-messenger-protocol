@@ -144,7 +144,7 @@ jobs:
   # Gated by repo variable PUBLISH_ENABLED so the pipeline stays dormant until
   # GitHub Pages is enabled AND the BSR module buf.build/ttm/messenger-protocol
   # exists. Enable post-merge:  gh variable set PUBLISH_ENABLED --body true
-  # Each push is ordered behind its diagrams job so injected .svgz links are live
+  # Each push is ordered behind its diagrams job so injected .svg links are live
   # before the label moves. Publish path depends on buf-lint only (not
   # sanity-checks): releases may be intentionally breaking.
 
