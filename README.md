@@ -11,6 +11,8 @@
 
 The Travel Token Messenger Protocol is created together with Partners from each vertical (flights, hotels, holiday homes, transfers, car rental, cruise, …). The objective is to create a message standard for the Travel Token Messenger that is simple, efficient, complete, robust, and easy to integrate by all partners. The Travel Token Messenger Protocol is open source — free to be used anywhere, but of course targeted to be used with the Travel Token Messenger.
 
+For more information about the concept please visit [the Camino Messenger documentation](https://traveltokenmarketplace.github.io/travel-token-messenger-docs/docs/travel-token-messenger/introduction)
+
 Please do not hesitate to communicate your observations on this documentation — uncertainties, mistakes, or missing explanations — so that we can continuously improve it.
 
 ## License
