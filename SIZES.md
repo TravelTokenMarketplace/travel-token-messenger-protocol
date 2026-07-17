@@ -4,6 +4,7 @@ _Updated by CI on each diagram publish. Limit: 1 GB per GitHub Pages site._
 
 | folder | size | % of 1 GB |
 |---|---:|---:|
-| dev | 30.1 MB | 3.2% |
-| (root) | 295 B | 0.0% |
-| **total** | **30.1 MB** | **3.2%** |
+| dev | 25.4 MB | 2.7% |
+| main | 25.3 MB | 2.7% |
+| (root) | 535 B | 0.0% |
+| **total** | **50.7 MB** | **5.3%** |
