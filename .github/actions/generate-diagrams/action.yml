@@ -49,17 +49,20 @@ runs:
       run: |
         bash scripts/gh_pages_size_report.sh _ghpages --sizes-md _ghpages/SIZES.md \
           | tee -a "$GITHUB_STEP_SUMMARY"
-    - name: Commit SIZES.md
+    - name: Commit gh-pages root files (index.html + SIZES.md)
       shell: bash
       working-directory: _ghpages
       run: |
+        # index.html is the repo-tracked landing page (source of truth); refresh
+        # the published copy. SIZES.md was written by the size-report step above.
+        cp "${GITHUB_WORKSPACE}/pages/index.html" index.html
         git config user.name  "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add SIZES.md
+        git add index.html SIZES.md
         if git diff --cached --quiet; then
-          echo "SIZES.md unchanged; nothing to commit."
+          echo "gh-pages root files unchanged; nothing to commit."
         else
-          git commit -m "chore(pages): update SIZES.md [skip ci]"
+          git commit -m "chore(pages): update root index.html + SIZES.md [skip ci]"
           # peaceiris already pushed to gh-pages earlier in this run, and another
           # publish run may push between our checkout and now. Rebase + retry so a
           # concurrent push doesn't fail the job on a non-fast-forward.
@@ -70,5 +73,5 @@ runs:
             git fetch origin gh-pages
             git rebase origin/gh-pages
           done
-          [ "$pushed" = true ] || { echo "::error::could not push SIZES.md after 3 attempts"; exit 1; }
+          [ "$pushed" = true ] || { echo "::error::could not push gh-pages root files after 3 attempts"; exit 1; }
         fi
