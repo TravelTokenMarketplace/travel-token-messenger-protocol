@@ -1,5 +1,98 @@
 <!doctype html>
-<meta charset="utf-8">
-<title>travel-token-messenger-protocol — diagrams</title>
-<h1>travel-token-messenger-protocol</h1>
-<p>Protobuf schema diagrams are published here per label (release-*, main, dev, draft/preview) by CI. This is a placeholder for the GitHub Pages root.</p>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Travel Token Messenger Protocol — Diagrams</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1b1f24;
+      --muted: #57606a;
+      --card: #f6f8fa;
+      --border: #d0d7de;
+      --accent: #0c65ec;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #9198a1;
+        --card: #161b22;
+        --border: #30363d;
+        --accent: #72a1ed;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 2.5rem 1.25rem;
+    }
+    main { width: 100%; max-width: 44rem; }
+    h1 { font-size: 1.7rem; margin: 0 0 .35rem; }
+    .lede { color: var(--muted); margin: 0 0 2rem; }
+    h2 {
+      font-size: .8rem; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--muted); margin: 2rem 0 .75rem;
+    }
+    .links { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; }
+    .links a {
+      display: flex; align-items: baseline; gap: .6rem;
+      padding: .9rem 1.1rem; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--card); color: var(--fg); text-decoration: none;
+    }
+    .links a:hover { border-color: var(--accent); }
+    .links .title { font-weight: 600; }
+    .links .desc { color: var(--muted); font-size: .9rem; }
+    code {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 5px; padding: .1rem .35rem; font-size: .85em;
+    }
+    footer { margin-top: 2.5rem; color: var(--muted); font-size: .85rem; }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Travel Token Messenger Protocol</h1>
+    <p class="lede">
+      Generated Protobuf schema diagrams, published here per label. Each publish
+      label has its own folder — <code>dev</code>, <code>main</code>,
+      <code>release-&lt;N&gt;</code>, <code>draft</code> — mirroring the label on the
+      Buf Schema Registry.
+    </p>
+
+    <h2>Links</h2>
+    <ul class="links">
+      <li>
+        <a href="https://buf.build/ttm/messenger-protocol/">
+          <span class="title">Buf Schema Registry ↗</span>
+          <span class="desc">Browse the module, types, and generated SDKs</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/TravelTokenMarketplace/travel-token-messenger-protocol">
+          <span class="title">GitHub repository ↗</span>
+          <span class="desc">Source <code>.proto</code> files and CI</span>
+        </a>
+      </li>
+      <li>
+        <a href="https://traveltokenmarketplace.github.io/travel-token-messenger-docs/docs/travel-token-messenger/introduction">
+          <span class="title">Messenger documentation ↗</span>
+          <span class="desc">Concepts and integration guide</span>
+        </a>
+      </li>
+    </ul>
+
+    <footer>
+      Published site size is tracked in <a href="./SIZES.md">SIZES.md</a>.
+    </footer>
+  </main>
+</body>
+</html>
