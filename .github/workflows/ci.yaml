@@ -151,6 +151,9 @@ jobs:
   # publish jobs run only when the diagrams could actually change (proto or the
   # generation pipeline) instead of on every qualifying push. release/preview
   # publish unconditionally and do not consult this.
+  # Scope = the grep in `filter` below. It intentionally excludes the bsr-push
+  # action and buf.* (they affect the BSR push, not the rendered diagrams); add
+  # them to that pattern if you want a buf-config change to force a re-publish.
   changes:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' }}
