@@ -96,10 +96,9 @@ jobs:
   # are any unjustified breaking changes.
   sanity-checks:
     runs-on: ubuntu-latest
-    # TODO(rebrand): re-enable post-merge (origin/main on ttm + BSR baseline exists).
-    # When re-enabling, scope it to PRs + dev/main pushes (design §4.5):
-    #   if: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main')) }}
-    if: false
+    # Scoped to PRs + dev/main pushes (design §4.5). Runs buf-breaking against the
+    # main BSR label, which was seeded once origin/main went ttm post-rebrand.
+    if: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main')) }}
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v4
