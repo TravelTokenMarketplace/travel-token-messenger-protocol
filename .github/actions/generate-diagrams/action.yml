@@ -19,7 +19,27 @@ runs:
     - name: Generate diagrams
       shell: bash
       run: |
-        wget https://github.com/seamia/protodot/raw/master/binaries/protodot-linux-amd64
+        set -euo pipefail
+
+        # protodot is a third-party binary fetched from a small upstream repo and
+        # then executed in a job holding a write-scoped token. It used to be
+        # pulled from the mutable "master" ref with no integrity check at all, so
+        # whatever that path served on the day was run as-is.
+        #
+        # Pinned to the commit tagged v1.2.0 upstream, which is also the commit
+        # that last touched this binary, so this is byte-for-byte what CI was
+        # already running. Upstream publishes no release assets, hence a commit
+        # SHA rather than a release URL.
+        PROTODOT_COMMIT="0ff55f3828fa5da04814db8f03c6e54cdbcb810c"
+        PROTODOT_SHA256="93d102517fa2b45e0ddb7ab1aefdf77c4734ae76c21d9cde9449c393ed7acbbe"
+
+        curl -fsSL -o protodot-linux-amd64 \
+          "https://raw.githubusercontent.com/seamia/protodot/${PROTODOT_COMMIT}/binaries/protodot-linux-amd64"
+
+        # Verify BEFORE making it executable, so a mismatch never gets a chance
+        # to run.
+        echo "${PROTODOT_SHA256}  protodot-linux-amd64" | sha256sum --check --strict
+
         chmod +x protodot-linux-amd64
         mkdir -v -p gen/bin
         mv protodot-linux-amd64 gen/bin/protodot
