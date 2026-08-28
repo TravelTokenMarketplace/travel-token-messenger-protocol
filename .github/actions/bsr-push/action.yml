@@ -8,9 +8,9 @@ inputs:
     description: "buf.build API token."
     required: true
   buf_version:
-    description: "Pinned buf version to install. Keep in step with BUF_VERSION in ci.yaml."
+    description: "Pinned buf version to install. Keep in step with BUF_VERSION in ci.yaml and buf in mise.toml."
     required: false
-    default: "v1.47.2"
+    default: "v1.71.0"
 runs:
   using: "composite"
   steps:

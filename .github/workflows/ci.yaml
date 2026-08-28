@@ -37,11 +37,21 @@ permissions:
 env:
   # Pin the buf toolchain. Every install step below reads this, and fails if it
   # is missing rather than quietly falling back to whatever "latest" is that
-  # day. Matches the version the bot repo pins.
+  # day.
+  #
+  # This must stay in step with `buf` in mise.toml, which is what formats the
+  # protos on a developer's machine. buf's formatter is not stable across
+  # releases: 1.71.0 keeps a nested message literal in a validate option inline,
+  # while both 1.47.2 and 1.72.0 expand it onto three lines. Since
+  # scripts/diff_against_branch.sh rejects any structural change to a proto that
+  # already exists on main, a version whose formatter disagrees with the
+  # committed files cannot be adopted by reformatting them — the pin has to match
+  # the files. Check `buf format proto --diff --exit-code` is a no-op before
+  # bumping this.
   #
   # The bsr-push composite action carries the same version as an input default;
   # keep the two in step when bumping.
-  BUF_VERSION: "v1.47.2"
+  BUF_VERSION: "v1.71.0"
 
 jobs:
   # Run buf's lint to check for errros
