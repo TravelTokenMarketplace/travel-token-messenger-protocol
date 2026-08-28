@@ -7,12 +7,18 @@ inputs:
   buf_token:
     description: "buf.build API token."
     required: true
+  buf_version:
+    description: "Pinned buf version to install. Keep in step with BUF_VERSION in ci.yaml and buf in mise.toml."
+    required: false
+    default: "v1.71.0"
 runs:
   using: "composite"
   steps:
     - name: Install buf
       shell: bash
-      run: sudo ./scripts/buf-installer.sh
+      # Pinned: this job holds the BSR publish token, so it must not run
+      # whatever the newest buf release happens to be on the day.
+      run: sudo ./scripts/buf-installer.sh --version="${{ inputs.buf_version }}" --do-not-validate
     - name: Inject and verify diagram links
       shell: bash
       run: |

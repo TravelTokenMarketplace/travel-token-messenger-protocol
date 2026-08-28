@@ -34,6 +34,25 @@ on:
 permissions:
   contents: read
 
+env:
+  # Pin the buf toolchain. Every install step below reads this, and fails if it
+  # is missing rather than quietly falling back to whatever "latest" is that
+  # day.
+  #
+  # This must stay in step with `buf` in mise.toml, which is what formats the
+  # protos on a developer's machine. buf's formatter is not stable across
+  # releases: 1.71.0 keeps a nested message literal in a validate option inline,
+  # while both 1.47.2 and 1.72.0 expand it onto three lines. Since
+  # scripts/diff_against_branch.sh rejects any structural change to a proto that
+  # already exists on main, a version whose formatter disagrees with the
+  # committed files cannot be adopted by reformatting them — the pin has to match
+  # the files. Check `buf format proto --diff --exit-code` is a no-op before
+  # bumping this.
+  #
+  # The bsr-push composite action carries the same version as an input default;
+  # keep the two in step when bumping.
+  BUF_VERSION: "v1.71.0"
+
 jobs:
   # Run buf's lint to check for errros
   buf-lint:
@@ -43,14 +62,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Install buf
         run: |
-          # Installing buf
-          if [ "${{ env.buf_version }}" == "" ]; then
-            # Install latest version
-            sudo ./scripts/buf-installer.sh
-          else
-            # Install the defined version
-            sudo ./scripts/buf-installer.sh --version=${{ env.buf_version}}
-          fi
+          # Fail loudly if the pin is missing rather than installing "latest":
+          # the previous form branched on a variable that was defined nowhere,
+          # so the unpinned branch always won.
+          sudo ./scripts/buf-installer.sh \
+            --version="${BUF_VERSION:?BUF_VERSION must be set}" --do-not-validate
       - name: Buf lint
         uses: bufbuild/buf-lint-action@v1
         with:
@@ -62,14 +78,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Install buf
         run: |
-          # Installing buf
-          if [ "${{ env.buf_version }}" == "" ]; then
-            # Install latest version
-            sudo ./scripts/buf-installer.sh
-          else
-            # Install the defined version
-            sudo ./scripts/buf-installer.sh --version=${{ env.buf_version}}
-          fi
+          # Fail loudly if the pin is missing rather than installing "latest":
+          # the previous form branched on a variable that was defined nowhere,
+          # so the unpinned branch always won.
+          sudo ./scripts/buf-installer.sh \
+            --version="${BUF_VERSION:?BUF_VERSION must be set}" --do-not-validate
       - name: Buf format
         run: |
           # Run buf format
@@ -106,14 +119,11 @@ jobs:
           fetch-depth: 0
       - name: Install buf
         run: |
-          # Installing buf
-          if [ "${{ env.buf_version }}" == "" ]; then
-            # Install latest version
-            sudo ./scripts/buf-installer.sh
-          else
-            # Install the defined version
-            sudo ./scripts/buf-installer.sh --version=${{ env.buf_version }}
-          fi
+          # Fail loudly if the pin is missing rather than installing "latest":
+          # the previous form branched on a variable that was defined nowhere,
+          # so the unpinned branch always won.
+          sudo ./scripts/buf-installer.sh \
+            --version="${BUF_VERSION:?BUF_VERSION must be set}" --do-not-validate
       - name: Run proto dependency check
         run: scripts/dependency_checker.py --print-graph
       - name: Run diff against branch

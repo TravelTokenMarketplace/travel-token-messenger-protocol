@@ -1,2 +1,6 @@
 [tools]
-buf = "latest"
+# Kept in step with BUF_VERSION in .github/workflows/ci.yaml. This was "latest",
+# which is how the committed protos came to be formatted by a different buf than
+# CI ran: the formatter's output is not stable across releases, and a developer
+# resolving "latest" on a different day reformats files CI then rejects.
+buf = "1.71.0"
